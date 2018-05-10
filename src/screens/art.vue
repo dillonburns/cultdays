@@ -1,5 +1,5 @@
 <template>
-	<div>
+  <div>
    Art
   </div>
 </template>

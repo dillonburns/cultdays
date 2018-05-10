@@ -17,14 +17,24 @@ export default {
     return {
       links: [
         {
+          label: 'Shop',
+          path: '/shop',
+          image: require('@/assets/images/shop.png')
+        },
+        {
+          label: 'Music',
+          path: '/music',
+          image: require('@/assets/images/music.png')
+        },
+        {
           label: 'Blog',
           path: '/blog',
           image: require('@/assets/images/blog.png')
         },
         {
-          label: 'Shop',
-          path: '/shop',
-          image: require('@/assets/images/shop.png')
+          label: 'Art',
+          path: '/art',
+          image: require('@/assets/images/art.png')
         },
         {
           label: 'Contact',
@@ -49,7 +59,7 @@ export default {
 
 <style lang="scss" scoped>
   .menu-item {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
   .menu-image {
     height: 35px;

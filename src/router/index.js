@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Art from '@/screens/art'
 import Home from '@/screens/home'
 import Music from '@/screens/music'
 import Blog from '@/screens/blog'
@@ -20,6 +21,11 @@ export default new Router({
       path: '/music',
       name: 'Music',
       component: Music
+    },
+    {
+      path: '/art',
+      name: 'Art',
+      component: Art
     },
     {
       path: '/blog',

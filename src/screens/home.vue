@@ -3,17 +3,20 @@
     <img src="@/assets/images/logo.png"
          class="logo">
     <navigation />
+    <splash-animation />
   </div>
 </template>
 
 <script>
 import Navigation from '@/components/navigation'
+import SplashAnimation from '@/screens/home/splash_animation'
 
 export default {
   name: 'Home',
 
   components: {
-    Navigation
+    Navigation,
+    SplashAnimation
   },
 
   data () {
