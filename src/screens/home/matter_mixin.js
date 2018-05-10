@@ -37,11 +37,30 @@ export default {
         velocityIterations: 1,
         constraintIterations: 1
       })
+      this.world = this.engine.world
 
       // create a renderer
       this.render = this.Render.create({
         element: document.getElementById('matter'),
-        engine: this.engine
+        engine: this.engine,
+        options: {
+          width: this.windowWidth,
+          height: this.windowHeight,
+          background: 'transparent',
+          wireframes: false,
+          showSleeping: false
+        }
+      })
+
+      this.mouse = this.Mouse.create(this.render.canvas)
+      this.mouseConstraint = this.MouseConstraint.create(this.engine, {
+        mouse: this.mouse,
+        constraint: {
+          stiffness: 0.8,
+          render: {
+            visible: false
+          }
+        }
       })
     },
 
@@ -56,11 +75,52 @@ export default {
       // add all of the bodies to the world
       this.World.add(this.engine.world, [boxA, boxB, ground])
 
+      // Mouse Controls
+      this.World.add(this.world, this.mouseConstraint)
+
+      this.render.mouse = this.mouse
+
       // run the engine
       this.Engine.run(this.engine)
 
       // run the renderer
       this.Render.run(this.render)
+    },
+
+    addBounds () {
+      var boundWidth = 50
+      var boundOffset = boundWidth / 4
+      var boundColor = '#ffffff'
+      var ground = this.Bodies.rectangle(this.windowWidth / 2, this.windowHeight + boundOffset + 10, this.windowWidth, boundWidth, {
+        isStatic: true,
+        render: {
+          strokeStyle: boundColor,
+          fillStyle: boundColor
+        }
+      })
+      var ceiling = this.Bodies.rectangle(this.windowWidth / 2, 0 - boundOffset - 10, this.windowWidth, boundWidth, {
+        isStatic: true,
+        render: {
+          strokeStyle: boundColor,
+          fillStyle: boundColor
+        }
+      })
+      var lWall = this.Bodies.rectangle(0 - boundOffset - 10, this.windowHeight / 2, boundWidth, this.windowHeight, {
+        isStatic: true,
+        render: {
+          strokeStyle: boundColor,
+          fillStyle: boundColor
+        }
+      })
+      var rWall = this.Bodies.rectangle(this.windowWidth + boundOffset + 10, this.windowHeight / 2, boundWidth, this.windowHeight, {
+        isStatic: true,
+        render: {
+          strokeStyle: boundColor,
+          fillStyle: boundColor
+        }
+      })
+
+      this.World.add(this.world, [lWall, rWall, ground, ceiling])
     }
   }
 }

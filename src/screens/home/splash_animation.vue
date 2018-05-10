@@ -11,8 +11,8 @@ export default {
   mixins: [ MatterMixin ],
 
   mounted () {
-    console.log('splash mounted')
     this.initializeScene()
+    this.addBounds()
     this.runScene()
   }
 }
@@ -26,5 +26,6 @@ export default {
   right: 0;
   bottom: 0;
   background: rgba(0, 255, 0, 0.1);
+  overflow: hidden;
 }
 </style>

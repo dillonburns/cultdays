@@ -34,6 +34,7 @@ export default {
     justify-content: center;
     flex-direction: column;
     height: 100%;
+    overflow: hidden;
   }
 
   .logo {
