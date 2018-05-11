@@ -14,6 +14,7 @@ export default {
     this.initializeScene()
     this.addBounds()
     this.runScene()
+    this.addSpriteImages()
   }
 }
 </script>

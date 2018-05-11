@@ -1,19 +1,20 @@
 import Matter from 'matter-js'
 
+const Mouse = Matter.Mouse
+const World = Matter.World
+const Bodies = Matter.Bodies
+const Engine = Matter.Engine
+const Render = Matter.Render
+const MouseConstraint = Matter.MouseConstraint
+// const Body = Matter.Body
+// const Events = Matter.Events
+// const Common = Matter.Common
+// const Composite = Matter.Composite
+// const Composites = Matter.Composites
+
 export default {
   data () {
     return {
-      Engine: Matter.Engine,
-      Render: Matter.Render,
-      World: Matter.World,
-      MouseConstraint: Matter.MouseConstraint,
-      Mouse: Matter.Mouse,
-      Events: Matter.Events,
-      Composite: Matter.Composite,
-      Composites: Matter.Composites,
-      Common: Matter.Common,
-      Bodies: Matter.Bodies,
-      Body: Matter.Body,
       windowWidth: document.documentElement.clientWidth,
       windowHeight: document.documentElement.clientHeight,
       engine: null,
@@ -31,7 +32,7 @@ export default {
       console.log('inited scene')
 
       // create an engine
-      this.engine = this.Engine.create({
+      this.engine = Engine.create({
         enableSleeping: true,
         positionIterations: 1,
         velocityIterations: 1,
@@ -40,7 +41,7 @@ export default {
       this.world = this.engine.world
 
       // create a renderer
-      this.render = this.Render.create({
+      this.render = Render.create({
         element: document.getElementById('matter'),
         engine: this.engine,
         options: {
@@ -52,8 +53,8 @@ export default {
         }
       })
 
-      this.mouse = this.Mouse.create(this.render.canvas)
-      this.mouseConstraint = this.MouseConstraint.create(this.engine, {
+      this.mouse = Mouse.create(this.render.canvas)
+      this.mouseConstraint = MouseConstraint.create(this.engine, {
         mouse: this.mouse,
         constraint: {
           stiffness: 0.8,
@@ -68,51 +69,51 @@ export default {
       console.log('run scene')
 
       // create two boxes and a ground
-      var boxA = this.Bodies.rectangle(400, 200, 80, 80)
-      var boxB = this.Bodies.rectangle(450, 50, 80, 80)
-      var ground = this.Bodies.rectangle(400, 610, 810, 60, { isStatic: true })
+      var boxA = Bodies.rectangle(400, 200, 80, 80)
+      var boxB = Bodies.rectangle(450, 50, 80, 80)
+      var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true })
 
       // add all of the bodies to the world
-      this.World.add(this.engine.world, [boxA, boxB, ground])
+      World.add(this.engine.world, [boxA, boxB, ground])
 
       // Mouse Controls
-      this.World.add(this.world, this.mouseConstraint)
+      World.add(this.world, this.mouseConstraint)
 
       this.render.mouse = this.mouse
 
       // run the engine
-      this.Engine.run(this.engine)
+      Engine.run(this.engine)
 
       // run the renderer
-      this.Render.run(this.render)
+      Render.run(this.render)
     },
 
     addBounds () {
       var boundWidth = 50
       var boundOffset = boundWidth / 4
       var boundColor = '#ffffff'
-      var ground = this.Bodies.rectangle(this.windowWidth / 2, this.windowHeight + boundOffset + 10, this.windowWidth, boundWidth, {
+      var ground = Bodies.rectangle(this.windowWidth / 2, this.windowHeight + boundOffset + 10, this.windowWidth, boundWidth, {
         isStatic: true,
         render: {
           strokeStyle: boundColor,
           fillStyle: boundColor
         }
       })
-      var ceiling = this.Bodies.rectangle(this.windowWidth / 2, 0 - boundOffset - 10, this.windowWidth, boundWidth, {
+      var ceiling = Bodies.rectangle(this.windowWidth / 2, 0 - boundOffset - 10, this.windowWidth, boundWidth, {
         isStatic: true,
         render: {
           strokeStyle: boundColor,
           fillStyle: boundColor
         }
       })
-      var lWall = this.Bodies.rectangle(0 - boundOffset - 10, this.windowHeight / 2, boundWidth, this.windowHeight, {
+      var lWall = Bodies.rectangle(0 - boundOffset - 10, this.windowHeight / 2, boundWidth, this.windowHeight, {
         isStatic: true,
         render: {
           strokeStyle: boundColor,
           fillStyle: boundColor
         }
       })
-      var rWall = this.Bodies.rectangle(this.windowWidth + boundOffset + 10, this.windowHeight / 2, boundWidth, this.windowHeight, {
+      var rWall = Bodies.rectangle(this.windowWidth + boundOffset + 10, this.windowHeight / 2, boundWidth, this.windowHeight, {
         isStatic: true,
         render: {
           strokeStyle: boundColor,
@@ -120,7 +121,17 @@ export default {
         }
       })
 
-      this.World.add(this.world, [lWall, rWall, ground, ceiling])
+      World.add(this.world, [lWall, rWall, ground, ceiling])
+    },
+
+    addSpriteImages () {
+      var context = require.context('@/assets/images/splash/', true, /\.(png)$/)
+      var imgPaths = {}
+
+      context.keys().forEach((filename, index) => {
+        imgPaths[index] = context(filename)
+      })
+      console.log(imgPaths)
     }
   }
 }
