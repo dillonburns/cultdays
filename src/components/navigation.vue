@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav :class="{horizontal}">
     <div v-for="(link, index) in links"
          :key="index"
          class="menu-item">
@@ -13,6 +13,13 @@
 
 <script>
 export default {
+  props: {
+    horizontal: {
+      type: Boolean,
+      default: false
+    }
+  },
+
   data: function () {
     return {
       links: [
@@ -29,7 +36,14 @@ export default {
         {
           label: 'Art',
           path: '/art',
-          image: require('@/assets/images/art.png')
+          image: require('@/assets/images/art.png'),
+          children: [
+            {
+              label: 'Instagram',
+              url: 'https://www.instagram.com/cultdays/',
+              image: require('@/assets/images/instagram.png')
+            }
+          ]
         },
         {
           label: 'Contact',
@@ -44,7 +58,19 @@ export default {
         {
           label: 'Music',
           path: '/music',
-          image: require('@/assets/images/music.png')
+          image: require('@/assets/images/music.png'),
+          children: [
+            {
+              label: 'Bandcamp',
+              url: 'https://cultdays.bandcamp.com/',
+              image: require('@/assets/images/bandcamp.png')
+            },
+            {
+              label: 'Soundcloud',
+              url: 'https://soundcloud.com/cultdays',
+              image: require('@/assets/images/soundcloud.png')
+            }
+          ]
         }
       ]
     }
@@ -53,10 +79,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+nav {
   .menu-item {
     margin-bottom: 10px;
   }
-  .menu-image {
-    height: 35px;
+
+  &.horizontal {
+    .menu-item {
+      display: inline-block;
+      margin-right: 20px;
+    }
   }
+}
+
+.menu-image {
+  height: 35px;
+}
 </style>

@@ -1,8 +1,7 @@
 <template>
   <div class="home">
     <div class="home-content dom-matter">
-      <img src="@/assets/images/logo.png"
-           class="logo">
+      <logo />
       <navigation />
     </div>
     <splash-animation />
@@ -10,6 +9,7 @@
 </template>
 
 <script>
+import Logo from '@/components/logo'
 import Navigation from '@/components/navigation'
 import SplashAnimation from '@/screens/home/splash_animation'
 
@@ -17,6 +17,7 @@ export default {
   name: 'Home',
 
   components: {
+    Logo,
     Navigation,
     SplashAnimation
   },
@@ -30,22 +31,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .home {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 100%;
-    overflow: hidden;
-  }
+.home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
 
-  .home-content {
-    z-index: 10;
-  }
+.home-content {
+  z-index: 10;
+}
 
-  .logo {
-    height: 100px;
-    width: auto;
-    padding-bottom: 40px;
-  }
+/deep/ > .logo {
+  margin-bottom: 40px;
+}
 </style>

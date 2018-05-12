@@ -72,7 +72,7 @@ export default {
       this.render.mouse = this.mouse
 
       this.world.gravity.x = 0
-      this.world.gravity.y = 0.1
+      this.world.gravity.y = 0.5
 
       // run the engine
       Engine.run(this.engine)
@@ -82,37 +82,20 @@ export default {
     },
 
     addBounds () {
-      var boundWidth = 50
-      var boundOffset = boundWidth / 4
-      var boundColor = '#ffffff'
-      var ground = Bodies.rectangle(this.windowWidth / 2, this.windowHeight + boundOffset + 10, this.windowWidth, boundWidth, {
+      let boundWidth = 50
+      let boundOffset = boundWidth / 4
+      let boundColor = '#ffffff'
+      let opts = {
         isStatic: true,
         render: {
           strokeStyle: boundColor,
           fillStyle: boundColor
         }
-      })
-      var ceiling = Bodies.rectangle(this.windowWidth / 2, 0 - boundOffset - 10, this.windowWidth, boundWidth, {
-        isStatic: true,
-        render: {
-          strokeStyle: boundColor,
-          fillStyle: boundColor
-        }
-      })
-      var lWall = Bodies.rectangle(0 - boundOffset - 10, this.windowHeight / 2, boundWidth, this.windowHeight, {
-        isStatic: true,
-        render: {
-          strokeStyle: boundColor,
-          fillStyle: boundColor
-        }
-      })
-      var rWall = Bodies.rectangle(this.windowWidth + boundOffset + 10, this.windowHeight / 2, boundWidth, this.windowHeight, {
-        isStatic: true,
-        render: {
-          strokeStyle: boundColor,
-          fillStyle: boundColor
-        }
-      })
+      }
+      let ground = Bodies.rectangle(this.windowWidth / 2, this.windowHeight + boundOffset + 10, this.windowWidth, boundWidth, opts)
+      let ceiling = Bodies.rectangle(this.windowWidth / 2, 0 - boundOffset - 10, this.windowWidth, boundWidth, opts)
+      let lWall = Bodies.rectangle(0 - boundOffset - 10, this.windowHeight / 2, boundWidth, this.windowHeight, opts)
+      let rWall = Bodies.rectangle(this.windowWidth + boundOffset + 10, this.windowHeight / 2, boundWidth, this.windowHeight, opts)
 
       World.add(this.world, [lWall, rWall, ground, ceiling])
     },
@@ -125,7 +108,7 @@ export default {
         var url = context(filename)
 
         img.onload = () => {
-          let scale = 0.5
+          let scale = 0.6
           let randX = Common.random(this.windowWidth / 8, this.windowWidth - (this.windowWidth / 8))
           let randY = Common.random(this.windowHeight / 8, this.windowHeight - (this.windowHeight / 8))
           let tempIcon = Bodies.rectangle(randX, randY, img.width * scale, img.height * scale, {
