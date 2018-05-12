@@ -8,7 +8,7 @@ const Render = Matter.Render
 const MouseConstraint = Matter.MouseConstraint
 // const Body = Matter.Body
 // const Events = Matter.Events
-// const Common = Matter.Common
+const Common = Matter.Common
 // const Composite = Matter.Composite
 // const Composites = Matter.Composites
 
@@ -66,20 +66,13 @@ export default {
     },
 
     runScene () {
-      console.log('run scene')
-
-      // create two boxes and a ground
-      var boxA = Bodies.rectangle(400, 200, 80, 80)
-      var boxB = Bodies.rectangle(450, 50, 80, 80)
-      var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true })
-
-      // add all of the bodies to the world
-      World.add(this.engine.world, [boxA, boxB, ground])
-
       // Mouse Controls
       World.add(this.world, this.mouseConstraint)
 
       this.render.mouse = this.mouse
+
+      this.world.gravity.x = 0
+      this.world.gravity.y = 0.1
 
       // run the engine
       Engine.run(this.engine)
@@ -126,12 +119,51 @@ export default {
 
     addSpriteImages () {
       var context = require.context('@/assets/images/splash/', true, /\.(png)$/)
-      var imgPaths = {}
 
       context.keys().forEach((filename, index) => {
-        imgPaths[index] = context(filename)
+        var img = new Image()
+        var url = context(filename)
+
+        img.onload = () => {
+          let scale = 0.5
+          let randX = Common.random(this.windowWidth / 8, this.windowWidth - (this.windowWidth / 8))
+          let randY = Common.random(this.windowHeight / 8, this.windowHeight - (this.windowHeight / 8))
+          let tempIcon = Bodies.rectangle(randX, randY, img.width * scale, img.height * scale, {
+            restitution: 0.05,
+            render: {
+              strokeStyle: '#f00',
+              fillStyle: '#f00',
+              sprite: {
+                texture: url,
+                xScale: scale,
+                yScale: scale
+              }
+            }
+          })
+          World.add(this.world, tempIcon)
+        }
+        img.src = url
       })
-      console.log(imgPaths)
+    },
+
+    addDomMatter (objs) {
+      for (let el in objs) {
+        let obj = objs[el]
+        let width = obj.clientWidth
+        let height = obj.clientHeight
+        let posX = obj.getBoundingClientRect().left + width / 2
+        let posY = obj.getBoundingClientRect().top + height / 2
+
+        var domBody = Bodies.rectangle(posX, posY, width * 1, height * 1, {
+          isStatic: true,
+          render: {
+            strokeStyle: 'transparent',
+            fillStyle: 'transparent'
+          }
+        })
+
+        World.add(this.world, domBody)
+      }
     }
   }
 }

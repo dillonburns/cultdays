@@ -1,9 +1,12 @@
 <template>
-  <div id="matter">
+  <div>
+    <div id="matter">
+    </div>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import MatterMixin from './matter_mixin'
 
 export default {
@@ -15,6 +18,9 @@ export default {
     this.addBounds()
     this.runScene()
     this.addSpriteImages()
+    Vue.nextTick().then(() => {
+      this.addDomMatter(document.getElementsByClassName('domMatter'))
+    })
   }
 }
 </script>
@@ -26,7 +32,6 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 255, 0, 0.1);
   overflow: hidden;
 }
 </style>
