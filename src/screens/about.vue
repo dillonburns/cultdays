@@ -38,7 +38,7 @@ export default {
 <style lang="scss" scoped>
 .about {
   padding: 0 150px;
-  margin-top: 50px;
+  margin-top: 20px;
   color: black;
   text-align: left;
 }

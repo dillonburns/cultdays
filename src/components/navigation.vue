@@ -26,7 +26,7 @@ export default {
         {
           label: 'Shop',
           path: '/shop',
-          image: require('@/assets/images/shop.png'),
+          image: require('@/assets/images/shop.png')
         },
         {
           label: 'Music',
@@ -36,14 +36,15 @@ export default {
             {
               label: 'Bandcamp',
               url: 'https://cultdays.bandcamp.com/',
-              image: require('@/assets/images/bandcamp.png')
+              image: require('@/assets/images/bandcamp.png'),
+              hidden: true
             },
             {
               label: 'Soundcloud',
               url: 'https://soundcloud.com/cultdays',
               image: require('@/assets/images/soundcloud.png')
             }
-          ],
+          ]
         },
         {
           label: 'Art',
@@ -66,7 +67,7 @@ export default {
           label: 'About',
           path: '/about',
           image: require('@/assets/images/aboutme.png')
-        },
+        }
       ]
     }
   }
