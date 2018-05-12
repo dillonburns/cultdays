@@ -99,7 +99,7 @@ export default {
     stopMusicOtherThan (trackID) {
       let plyrs = this.$refs.plyr
       for (let player in plyrs) {
-        if(player != trackID) {
+        if (player !== trackID) {
           plyrs[player].player.pause()
         }
       }
