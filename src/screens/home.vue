@@ -1,8 +1,9 @@
 <template>
   <div class="home">
     <img src="@/assets/images/logo.png"
-         class="logo">
-    <navigation />
+         class="logo domMatter">
+    <navigation
+      class="domMatter" />
     <splash-animation />
   </div>
 </template>

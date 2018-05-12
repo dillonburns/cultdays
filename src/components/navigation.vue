@@ -27,11 +27,6 @@ export default {
           image: require('@/assets/images/music.png')
         },
         {
-          label: 'Blog',
-          path: '/blog',
-          image: require('@/assets/images/blog.png')
-        },
-        {
           label: 'Art',
           path: '/art',
           image: require('@/assets/images/art.png')
