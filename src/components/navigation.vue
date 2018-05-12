@@ -27,6 +27,11 @@ export default {
           label: 'Shop',
           path: '/shop',
           image: require('@/assets/images/shop.png'),
+        },
+        {
+          label: 'Music',
+          path: '/music',
+          image: require('@/assets/images/music.png'),
           children: [
             {
               label: 'Bandcamp',
@@ -39,11 +44,6 @@ export default {
               image: require('@/assets/images/soundcloud.png')
             }
           ],
-        },
-        {
-          label: 'Music',
-          path: '/music',
-          image: require('@/assets/images/music.png')
         },
         {
           label: 'Art',
