@@ -1,8 +1,8 @@
 <template>
   <page-default>
     <div class="music">
-      <div v-for="(album, index) in music.albums"
-           :key="index"
+      <div v-for="(album, aindex) in music.albums"
+           :key="aindex"
            class="album">
         <div class="cover">
           <img :src="album.cover">
@@ -11,16 +11,18 @@
           <div class="title">
             {{ album.title }}
           </div>
-          <div v-for="(track, index) in album.tracks"
-               :key="index"
+          <div v-for="(track, tindex) in album.tracks"
+               :key="tindex"
                class="track">
             <div class="track-title">
               {{ track.title }}
             </div>
             <plyr class="player"
-                  ref="plyr">
+                  ref="plyr"
+                  :emit="['play']"
+                  @play="trackPlayed(aindex + '.' + tindex)">
               <audio>
-                <source :src="album.tracks[index].path"
+                <source :src="album.tracks[tindex].path"
                         type="audio/mp3" />
               </audio>
             </plyr>
@@ -35,8 +37,6 @@
 import PageDefault from '@/components/page_default'
 import { Plyr } from 'vue-plyr'
 import 'vue-plyr/dist/vue-plyr.css'
-
-const BOOM_FOREVER_PATH = '@/assets/music/BOOM_FOREVER/'
 
 export default {
   components: {
@@ -84,8 +84,7 @@ export default {
               {
                 title: 'REAL LOVE (PROD. GHOST DAD)',
                 path: require('@/assets/music/BOOM_FOREVER/REAL_LOVE_(PROD_GHOST_DAD).mp3')
-              },
-
+              }
             ]
           }
         ]
@@ -97,8 +96,19 @@ export default {
   },
 
   methods: {
+    stopMusicOtherThan (trackID) {
+      let plyrs = this.$refs.plyr
+      for (let player in plyrs) {
+        if(player != trackID) {
+          plyrs[player].player.pause()
+        }
+      }
+    },
+    trackPlayed (trackID) {
+      this.stopMusicOtherThan(trackID.split('.')[1])
+    },
     loadMusic () {
-      console.log('Loading music..')
+      console.log('Loading music via..')
       for (let album in this.music.albums) {
         let tracksContext = this.music.albums[album].tracksContext
         let trackPaths = []
