@@ -101,11 +101,11 @@ export default {
     },
 
     addSpriteImages () {
-      var context = require.context('@/assets/images/splash/', true, /\.(png)$/)
+      let spriteContext = require.context('@/assets/images/splash/', true, /\.(png)$/)
 
-      context.keys().forEach((filename, index) => {
-        var img = new Image()
-        var url = context(filename)
+      spriteContext.keys().forEach((filename, index) => {
+        let img = new Image()
+        let url = spriteContext(filename)
 
         img.onload = () => {
           let scale = 0.6
