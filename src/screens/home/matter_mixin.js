@@ -149,8 +149,10 @@ export default {
     addDomMatter (objs) {
       for (let el in objs) {
         let obj = objs[el]
+
         let width = obj.clientWidth
         let height = obj.clientHeight
+
         let posX = obj.getBoundingClientRect().left + width / 2
         let posY = obj.getBoundingClientRect().top + height / 2
 

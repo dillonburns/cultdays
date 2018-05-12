@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <div id="matter">
-    </div>
+  <div id="matter">
   </div>
 </template>
 
@@ -19,7 +17,11 @@ export default {
     this.runScene()
     this.addSpriteImages()
     Vue.nextTick().then(() => {
-      this.addDomMatter(document.getElementsByClassName('domMatter'))
+      try {
+        this.addDomMatter(document.getElementsByClassName('dom-matter'))
+      } catch (e) {
+        // the above returns an HTMLCollection with contains a 'length' element which cannot be acted on by `this.addDomMatter`
+      }
     })
   }
 }

@@ -1,9 +1,10 @@
 <template>
   <div class="home">
-    <img src="@/assets/images/logo.png"
-         class="logo domMatter">
-    <navigation
-      class="domMatter" />
+    <div class="home-content dom-matter">
+      <img src="@/assets/images/logo.png"
+           class="logo">
+      <navigation />
+    </div>
     <splash-animation />
   </div>
 </template>
@@ -36,6 +37,10 @@ export default {
     flex-direction: column;
     height: 100%;
     overflow: hidden;
+  }
+
+  .home-content {
+    z-index: 10;
   }
 
   .logo {
