@@ -26,7 +26,19 @@ export default {
         {
           label: 'Shop',
           path: '/shop',
-          image: require('@/assets/images/shop.png')
+          image: require('@/assets/images/shop.png'),
+          children: [
+            {
+              label: 'Bandcamp',
+              url: 'https://cultdays.bandcamp.com/',
+              image: require('@/assets/images/bandcamp.png')
+            },
+            {
+              label: 'Soundcloud',
+              url: 'https://soundcloud.com/cultdays',
+              image: require('@/assets/images/soundcloud.png')
+            }
+          ],
         },
         {
           label: 'Music',
@@ -55,23 +67,6 @@ export default {
           path: '/about',
           image: require('@/assets/images/aboutme.png')
         },
-        {
-          label: 'Music',
-          path: '/music',
-          image: require('@/assets/images/music.png'),
-          children: [
-            {
-              label: 'Bandcamp',
-              url: 'https://cultdays.bandcamp.com/',
-              image: require('@/assets/images/bandcamp.png')
-            },
-            {
-              label: 'Soundcloud',
-              url: 'https://soundcloud.com/cultdays',
-              image: require('@/assets/images/soundcloud.png')
-            }
-          ]
-        }
       ]
     }
   }
