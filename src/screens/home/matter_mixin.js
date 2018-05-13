@@ -6,9 +6,9 @@ const Bodies = Matter.Bodies
 const Engine = Matter.Engine
 const Render = Matter.Render
 const MouseConstraint = Matter.MouseConstraint
+
 // const Body = Matter.Body
 // const Events = Matter.Events
-const Common = Matter.Common
 // const Composite = Matter.Composite
 // const Composites = Matter.Composites
 
@@ -22,8 +22,8 @@ export default {
       canvas: null,
       render: null,
       mouse: null,
-      mouseConstraint: null,
-      particles: []
+      mousePosition: null,
+      mouseConstraint: null
     }
   },
 
@@ -81,7 +81,7 @@ export default {
       Render.run(this.render)
     },
 
-    addBounds () {
+    addScreenBounds () {
       let boundWidth = 50
       let boundOffset = boundWidth / 4
       let boundColor = '#ffffff'
@@ -98,35 +98,6 @@ export default {
       let rWall = Bodies.rectangle(this.windowWidth + boundOffset + 10, this.windowHeight / 2, boundWidth, this.windowHeight, opts)
 
       World.add(this.world, [lWall, rWall, ground, ceiling])
-    },
-
-    addSpriteImages () {
-      let spriteContext = require.context('@/assets/images/splash/', true, /\.(png)$/)
-
-      spriteContext.keys().forEach((filename, index) => {
-        let img = new Image()
-        let url = spriteContext(filename)
-
-        img.onload = () => {
-          let scale = 0.6
-          let randX = Common.random(this.windowWidth / 8, this.windowWidth - (this.windowWidth / 8))
-          let randY = Common.random(this.windowHeight / 8, this.windowHeight - (this.windowHeight / 8))
-          let tempIcon = Bodies.rectangle(randX, randY, img.width * scale, img.height * scale, {
-            restitution: 0.05,
-            render: {
-              strokeStyle: '#f00',
-              fillStyle: '#f00',
-              sprite: {
-                texture: url,
-                xScale: scale,
-                yScale: scale
-              }
-            }
-          })
-          World.add(this.world, tempIcon)
-        }
-        img.src = url
-      })
     },
 
     addDomMatter (objs) {

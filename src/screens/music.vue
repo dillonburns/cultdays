@@ -20,7 +20,8 @@
             <plyr class="player"
                   ref="plyr"
                   :emit="['play']"
-                  @play="trackPlayed(aindex + '.' + tindex)">
+                  @play="trackPlayed(aindex + '.' + tindex)"
+                  :options="plyrOptions">
               <audio>
                 <source :src="album.tracks[tindex].path"
                         type="audio/mp3" />
@@ -46,6 +47,15 @@ export default {
 
   data () {
     return {
+      plyrOptions: {
+        autopause: false,
+        controls: [
+          'play',
+          'volume',
+          'progress',
+          'duration'
+        ]
+      },
       music: {
         albums: [
           {
@@ -92,7 +102,8 @@ export default {
     }
   },
 
-  mounted () {
+  destroyed () {
+    console.log('destroy music page')
   },
 
   methods: {
