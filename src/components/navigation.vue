@@ -3,7 +3,12 @@
     <div v-for="(link, index) in links"
          :key="index"
          class="menu-item">
-      <router-link :to="link.path">
+      <a v-if="link.externalURL"
+         :href="link.externalURL">
+        <img :src="link.image"
+             class="menu-image" />
+      </a>
+      <router-link v-else :to="link.path">
         <img :src="link.image"
              class="menu-image" />
       </router-link>
@@ -25,7 +30,7 @@ export default {
       links: [
         {
           label: 'Shop',
-          path: '/shop',
+          externalURL: 'https://cult-days.myshopify.com/',
           image: require('@/assets/images/shop.png')
         },
         {
