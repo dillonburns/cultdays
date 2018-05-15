@@ -30,7 +30,7 @@ export default {
       links: [
         {
           label: 'Shop',
-          externalURL: 'https://cult-days.myshopify.com/',
+          externalURL: 'https://shop.cultdays.com/',
           image: require('@/assets/images/shop.png')
         },
         {

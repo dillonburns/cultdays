@@ -32,20 +32,18 @@ export default {
   },
 
   mounted () {
+    // Setup Scene
     this.initializeScene()
     this.addScreenBounds()
-    this.runScene()
-    this.addSpriteImages()
     Vue.nextTick().then(() => {
-      try {
-        this.addDomMatter(document.getElementsByClassName('dom-matter'))
-      } catch (e) {
-        // the above returns an HTMLCollection with contains a 'length'
-        //   element which cannot be acted on by `this.addDomMatter` so
-        //   i catch the error and do nothing with it :(
-      }
+      this.addDomMatter(document.getElementsByClassName('dom-matter'))
     })
 
+    // Run
+    this.runScene()
+    this.addSpriteImages()
+
+    // Setup Events
     Events.on(this.mouseConstraint, 'mousedown', (event) => {
       this.mousePosition = event.mouse.position
       this.addAnotherImage(2)
@@ -83,7 +81,7 @@ export default {
             height: img.height
           })
 
-          Composite.add(this.splashComposite, tempIcon)
+          // Composite.add(this.splashComposite, tempIcon)
           World.addBody(this.world, tempIcon)
         }
         img.src = url
@@ -91,7 +89,6 @@ export default {
     },
 
     addAnotherImage (num) {
-      console.log(this.splashComposite)
       for (var x = 0; x < num; x++) {
         let i = Math.floor(Math.random() * this.spriteData.length)
         let newSpriteData = this.spriteData[i]
@@ -108,7 +105,7 @@ export default {
             }
           }
         })
-        Composite.add(this.splashComposite, newIcon)
+        // Composite.add(this.splashComposite, newIcon)
         World.addBody(this.world, newIcon)
       }
     }

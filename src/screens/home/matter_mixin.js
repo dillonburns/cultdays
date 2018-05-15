@@ -72,7 +72,7 @@ export default {
       this.render.mouse = this.mouse
 
       this.world.gravity.x = 0
-      this.world.gravity.y = 0.5
+      this.world.gravity.y = 0.75
 
       // run the engine
       Engine.run(this.engine)
@@ -101,24 +101,30 @@ export default {
     },
 
     addDomMatter (objs) {
-      for (let el in objs) {
-        let obj = objs[el]
+      try {
+        for (let el in objs) {
+          let obj = objs[el]
 
-        let width = obj.clientWidth
-        let height = obj.clientHeight
+          let width = obj.clientWidth
+          let height = obj.clientHeight
 
-        let posX = obj.getBoundingClientRect().left + width / 2
-        let posY = obj.getBoundingClientRect().top + height / 2
+          let posX = obj.getBoundingClientRect().left + width / 2
+          let posY = obj.getBoundingClientRect().top + height / 2
 
-        var domBody = Bodies.rectangle(posX, posY, width * 1, height * 1, {
-          isStatic: true,
-          render: {
-            strokeStyle: 'transparent',
-            fillStyle: 'transparent'
-          }
-        })
+          var domBody = Bodies.rectangle(posX, posY, width * 1, height * 1, {
+            isStatic: true,
+            render: {
+              strokeStyle: 'transparent',
+              fillStyle: 'transparent'
+            }
+          })
 
-        World.add(this.world, domBody)
+          World.add(this.world, domBody)
+        }
+      } catch (e) {
+        // the above returns an HTMLCollection with contains a 'length'
+        //   element which cannot be acted on by `this.addDomMatter` so
+        //   i catch the error and do nothing with it :(
       }
     }
   }

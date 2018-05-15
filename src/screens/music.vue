@@ -8,25 +8,33 @@
           <img :src="album.cover">
         </div>
         <div class="tracks">
-          <div class="title">
+          <div class="album-title">
             {{ album.title }}
           </div>
-          <div v-for="(track, tindex) in album.tracks"
-               :key="tindex"
-               class="track">
-            <div class="track-title">
-              {{ track.title }}
+          <div class="player-row">
+            <div class="now-playing-title">
+              {{ album.nowPlayingTrackTitle || 'click a song bitch' }}
             </div>
             <plyr class="player"
                   ref="plyr"
                   :emit="['play']"
-                  @play="trackPlayed(aindex + '.' + tindex)"
+                  @play="trackPlayed(aindex, tindex)"
                   :options="plyrOptions">
               <audio>
-                <source :src="album.tracks[tindex].path"
+                <source v-if="album.nowPlayingTrackTitle !== null"
+                        :src="null"
                         type="audio/mp3" />
               </audio>
             </plyr>
+          </div>
+          <div v-for="(track, tindex) in album.tracks"
+               :key="tindex"
+               class="track"
+               :class="{ 'now-playing': track.nowPlaying}">
+            <div class="track-title"
+                 @click="playTrack(aindex, tindex)">
+              <span class="track-number">{{ tindex + 1 }}</span>{{ track.title }}
+            </div>
           </div>
         </div>
       </div>
@@ -62,38 +70,42 @@ export default {
             title: 'BOOM FOREVER',
             cover: require('@/assets/music/BOOM_FOREVER/cover.jpg'),
             tracksContext: require.context('@/assets/music/BOOM_FOREVER/', true, /\.(mp3)$/),
+            nowPlayingTrackTitle: null,
             tracks: [
               {
                 title: 'CULT DAYS',
-                path: require('@/assets/music/BOOM_FOREVER/01_CULT_DAYS.mp3')
+                path: require('@/assets/music/BOOM_FOREVER/01_CULT_DAYS.mp3'),
+                nowPlaying: false
               },
               {
                 title: 'BOOM FOREVER',
-                path: require('@/assets/music/BOOM_FOREVER/02_BOOM_FOREVER.mp3')
+                path: require('@/assets/music/BOOM_FOREVER/02_BOOM_FOREVER.mp3'),
+                nowPlaying: false
               },
               {
                 title: 'SLACK',
-                path: require('@/assets/music/BOOM_FOREVER/03_SLACK.mp3')
+                path: require('@/assets/music/BOOM_FOREVER/03_SLACK.mp3'),
+                nowPlaying: false
               },
               {
                 title: 'MOVE BITCH',
-                path: require('@/assets/music/BOOM_FOREVER/04_MOVE_BITCH.mp3')
+                path: require('@/assets/music/BOOM_FOREVER/04_MOVE_BITCH.mp3'),
+                nowPlaying: false
               },
               {
                 title: 'ATTITUDE',
-                path: require('@/assets/music/BOOM_FOREVER/05_ATTITUDE.mp3')
+                path: require('@/assets/music/BOOM_FOREVER/05_ATTITUDE.mp3'),
+                nowPlaying: false
               },
               {
                 title: 'O I C U',
-                path: require('@/assets/music/BOOM_FOREVER/06_OICU.mp3')
-              },
-              {
-                title: 'REAL LOVE',
-                path: require('@/assets/music/BOOM_FOREVER/REAL_LOVE.mp3')
+                path: require('@/assets/music/BOOM_FOREVER/06_OICU.mp3'),
+                nowPlaying: false
               },
               {
                 title: 'REAL LOVE (PROD. GHOST DAD)',
-                path: require('@/assets/music/BOOM_FOREVER/REAL_LOVE_(PROD_GHOST_DAD).mp3')
+                path: require('@/assets/music/BOOM_FOREVER/REAL_LOVE_(PROD_GHOST_DAD).mp3'),
+                nowPlaying: false
               }
             ]
           }
@@ -103,7 +115,7 @@ export default {
   },
 
   destroyed () {
-    console.log('destroy music page')
+    // console.log('destroy music page')
   },
 
   methods: {
@@ -115,11 +127,35 @@ export default {
         }
       }
     },
-    trackPlayed (trackID) {
-      this.stopMusicOtherThan(trackID.split('.')[1])
+    playTrack (aID, tID) {
+      let plyr = this.$refs.plyr[aID].player
+      let album = this.music.albums[aID]
+      let track = album.tracks[tID]
+
+      album.tracks.forEach((track) => {
+        track.nowPlaying = false
+      })
+      track.nowPlaying = true
+      album.nowPlayingTrackTitle = track.title
+
+      plyr.source = {
+        type: 'audio',
+        title: track.title,
+        sources: [
+          {
+            src: track.path,
+            type: 'audio/mp3'
+          }
+        ]
+      }
+      plyr.play()
+    },
+    trackPlayed (aID, tID) {
+      console.log(trackID + ' played')
+      // this.stopMusicOtherThan(trackID.split('.')[1])
     },
     loadMusic () {
-      console.log('Loading music via..')
+      console.log('Loading music directory..')
       for (let album in this.music.albums) {
         let tracksContext = this.music.albums[album].tracksContext
         let trackPaths = []
@@ -137,8 +173,7 @@ export default {
 <style lang="scss" scoped>
 .music {
   color: black;
-  margin-top: 100px;
-  line-height: 48px;
+  margin-top: 50px;
 }
 
 .album {
@@ -153,28 +188,72 @@ export default {
     }
   }
 
+  .player-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 15px 0 10px;
+    max-width: 400px;
+
+    .now-playing-title {
+      flex: 1 1 80%;
+      font-weight: bold;
+    }
+
+    .player {
+      flex: 3 3 auto;
+    }
+  }
+
   .tracks {
     flex: 2 2 auto;
     text-align: left;
     padding-left: 20px;
 
-    .title {
+    .album-title {
       font-size: 48px;
+      font-weight: bold;
     }
+  }
+}
 
-    .track {
-      display: flex;
-      flex-direction: row;
+.track {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+  position: relative;
 
-      .track-title {
-        flex: 2 2 60%;
-      }
+  &.now-playing {
+    background: yellow;
+    font-weight: bold;
+  }
 
-      .player {
-        flex: 1 1 auto;
-      }
+  &:hover {
+    .track-title {
+      color: white;
+      cursor: pointer;
+      background: black;
+      border-color: yellow;
+    }
+    .track-number {
+      color: black;
     }
   }
 
+  .track-title {
+    flex: 1 1 auto;
+    border-top: 5px solid black;
+    border-left: 50px solid black;
+    padding-left: 10px;
+  }
+
+  .track-number {
+    position: absolute;
+    display: inline-block;
+    left: 22px;
+    color: white;
+    z-index: 10;
+    font-weight: bold;
+  }
 }
 </style>
