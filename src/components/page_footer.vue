@@ -1,6 +1,8 @@
 <template>
-  <footer>
-    <navigation horizontal/>
+  <footer class="columns is-centered is-mobile is-fluid">
+    <navigation
+      class="column is-four-fifths"
+      horizontal/>
   </footer>
 </template>
 

@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Art from '@/screens/art'
 import Home from '@/screens/home'
 import Music from '@/screens/music'
-import Blog from '@/screens/blog'
 import Shop from '@/screens/shop'
 import About from '@/screens/about'
 import Contact from '@/screens/contact'
@@ -26,11 +25,6 @@ export default new Router({
       path: '/art',
       name: 'Art',
       component: Art
-    },
-    {
-      path: '/blog',
-      name: 'Blog',
-      component: Blog
     },
     {
       path: '/shop',

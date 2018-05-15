@@ -1,8 +1,10 @@
 <template>
   <div class="page">
     <page-header />
-    <div class="content">
-      <slot/>
+    <div class="content container">
+      <div class="columns is-centered is-mobile is-fluid">
+        <slot/>
+      </div>
     </div>
     <page-footer />
   </div>
@@ -28,7 +30,6 @@ export default {
 }
 .content {
   flex: 1;
-  max-width: 980px;
   margin: auto;
   z-index: 10;
   font-size: 16px;

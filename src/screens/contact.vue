@@ -1,7 +1,6 @@
 <template>
   <page-default>
-    <div class="contact" v-html="text">
-    </div>
+    <div class="contact column is-three-quarters" v-html="text" />
   </page-default>
 </template>
 
@@ -21,10 +20,10 @@ export default {
   data () {
     return {
       text: `To book me for a musical performance, email <a target="_blank" href="mailto:${bookingEmail}">${bookingEmail}</a>
-              and CC <a target="_blank" href="mailto:${sabaEmail}">${sabaEmail}</a>.<br>
-              To book me for a reading or meditation email me at <a target="_blank" href="mailto:${sabaEmail}">${sabaEmail}</a>.<br>
-              My twitter is <a target="_blank" href="${twitter}">@cultdays</a><br>
-              My instagram is <a target="_blank" href="${instagram}">@cultdays</a><br>`
+              and CC <a target="_blank" href="mailto:${sabaEmail}">${sabaEmail}</a>.<br><br><br>
+              To book me for a reading or meditation email me at <a target="_blank" href="mailto:${sabaEmail}">${sabaEmail}</a>.<br><br><br>
+              My twitter is <a target="_blank" href="${twitter}">@cultdays</a><br><br><br>
+              My instagram is <a target="_blank" href="${instagram}">@cultdays</a><br><br><br>`
     }
   }
 }
@@ -34,6 +33,5 @@ export default {
 .contact {
   color: black;
   margin-top: 100px;
-  line-height: 48px;
 }
 </style>

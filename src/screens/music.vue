@@ -3,13 +3,17 @@
     <div class="music">
       <div v-for="(album, aindex) in music.albums"
            :key="aindex"
-           class="album">
-        <div class="cover">
+           class="album columns is-centered is-fluid">
+        <div class="cover column is-one-third">
           <img :src="album.cover">
+          <a :href="album.download">download</a>
         </div>
-        <div class="tracks">
+        <div class="tracks column is-two-thirds">
           <div class="album-title">
             {{ album.title }}
+            <a :href="album.download">
+              <img src="@/assets/images/download.png">
+            </a>
           </div>
           <div class="player-row">
             <div class="now-playing-title">
@@ -17,8 +21,6 @@
             </div>
             <plyr class="player"
                   ref="plyr"
-                  :emit="['play']"
-                  @play="trackPlayed(aindex, tindex)"
                   :options="plyrOptions">
               <audio>
                 <source v-if="album.nowPlayingTrackTitle !== null"
@@ -46,12 +48,15 @@
 import PageDefault from '@/components/page_default'
 import { Plyr } from 'vue-plyr'
 import 'vue-plyr/dist/vue-plyr.css'
+import MusicData from '@/screens/music/music_mixin.js'
 
 export default {
   components: {
     Plyr,
     PageDefault
   },
+
+  mixins: [ MusicData ],
 
   data () {
     return {
@@ -63,81 +68,43 @@ export default {
           'progress',
           'duration'
         ]
-      },
-      music: {
-        albums: [
-          {
-            title: 'BOOM FOREVER',
-            cover: require('@/assets/music/BOOM_FOREVER/cover.jpg'),
-            tracksContext: require.context('@/assets/music/BOOM_FOREVER/', true, /\.(mp3)$/),
-            nowPlayingTrackTitle: null,
-            tracks: [
-              {
-                title: 'CULT DAYS',
-                path: require('@/assets/music/BOOM_FOREVER/01_CULT_DAYS.mp3'),
-                nowPlaying: false
-              },
-              {
-                title: 'BOOM FOREVER',
-                path: require('@/assets/music/BOOM_FOREVER/02_BOOM_FOREVER.mp3'),
-                nowPlaying: false
-              },
-              {
-                title: 'SLACK',
-                path: require('@/assets/music/BOOM_FOREVER/03_SLACK.mp3'),
-                nowPlaying: false
-              },
-              {
-                title: 'MOVE BITCH',
-                path: require('@/assets/music/BOOM_FOREVER/04_MOVE_BITCH.mp3'),
-                nowPlaying: false
-              },
-              {
-                title: 'ATTITUDE',
-                path: require('@/assets/music/BOOM_FOREVER/05_ATTITUDE.mp3'),
-                nowPlaying: false
-              },
-              {
-                title: 'O I C U',
-                path: require('@/assets/music/BOOM_FOREVER/06_OICU.mp3'),
-                nowPlaying: false
-              },
-              {
-                title: 'REAL LOVE (PROD. GHOST DAD)',
-                path: require('@/assets/music/BOOM_FOREVER/REAL_LOVE_(PROD_GHOST_DAD).mp3'),
-                nowPlaying: false
-              }
-            ]
-          }
-        ]
       }
     }
   },
 
-  destroyed () {
-    // console.log('destroy music page')
+  mounted () {
+    // this.loadMusic()
   },
 
   methods: {
-    stopMusicOtherThan (trackID) {
+    stopMusicOtherThan (aID) {
       let plyrs = this.$refs.plyr
       for (let player in plyrs) {
-        if (player !== trackID) {
+        if (player !== aID) {
           plyrs[player].player.pause()
         }
       }
     },
     playTrack (aID, tID) {
+      // identify what track is playing
       let plyr = this.$refs.plyr[aID].player
       let album = this.music.albums[aID]
       let track = album.tracks[tID]
 
-      album.tracks.forEach((track) => {
-        track.nowPlaying = false
+      // unset all Now Playing data
+      this.music.albums.forEach((album) => {
+        album.nowPlayingTrackTitle = null
+        album.tracks.forEach((track) => {
+          track.nowPlaying = false
+        })
       })
+
+      // set correct Now Playing data
       track.nowPlaying = true
       album.nowPlayingTrackTitle = track.title
 
+      // stop all other players and play the track
+      this.stopMusicOtherThan(aID)
       plyr.source = {
         type: 'audio',
         title: track.title,
@@ -149,10 +116,6 @@ export default {
         ]
       }
       plyr.play()
-    },
-    trackPlayed (aID, tID) {
-      console.log(tID + ' played')
-      // this.stopMusicOtherThan(trackID.split('.')[1])
     },
     loadMusic () {
       console.log('Loading music directory..')
@@ -173,16 +136,13 @@ export default {
 <style lang="scss" scoped>
 .music {
   color: black;
-  margin-top: 50px;
+  margin: 50px 0;
+  padding: 0 7.5%;
 }
 
 .album {
-  display: flex;
-  flex-direction: row;
-
+  margin-bottom: 50px;
   .cover {
-    flex: 1 1 auto;
-
     img {
       width: 350px;
     }
@@ -193,10 +153,9 @@ export default {
     flex-direction: row;
     align-items: center;
     margin: 15px 0 10px;
-    max-width: 400px;
 
     .now-playing-title {
-      flex: 1 1 80%;
+      flex: 1 1 auto;
       font-weight: bold;
     }
 
@@ -206,22 +165,36 @@ export default {
   }
 
   .tracks {
-    flex: 2 2 auto;
     text-align: left;
-    padding-left: 20px;
+    padding-left: 15px;
 
     .album-title {
       font-size: 48px;
       font-weight: bold;
+      line-height: 35px;
+
+      a{
+        border: 0;
+        img {
+          width: 24px;
+          padding: 5px;
+          border: 1px solid black;
+
+          &:hover {
+              border-bottom-width: 2px;
+              transform: translateY(-2px);
+          }
+        }
+      }
     }
   }
 }
 
 .track {
   display: flex;
-  flex-direction: row;
-  margin-bottom: 15px;
   position: relative;
+  margin-bottom: 15px;
+  flex-direction: row;
 
   &.now-playing {
     background: yellow;

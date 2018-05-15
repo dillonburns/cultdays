@@ -1,6 +1,6 @@
 <template>
   <page-default>
-    <div class="about" v-html="text" />
+    <div class="about column is-three-quarters" v-html="text" />
   </page-default>
 </template>
 
@@ -36,7 +36,6 @@ export default {
 
 <style lang="scss" scoped>
 .about {
-  padding: 0 150px;
   margin-top: 10px;
   color: black;
   text-align: left;
