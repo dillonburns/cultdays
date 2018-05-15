@@ -151,7 +151,7 @@ export default {
       plyr.play()
     },
     trackPlayed (aID, tID) {
-      console.log(trackID + ' played')
+      console.log(tID + ' played')
       // this.stopMusicOtherThan(trackID.split('.')[1])
     },
     loadMusic () {
