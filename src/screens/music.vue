@@ -5,8 +5,7 @@
            :key="aindex"
            class="album columns is-centered is-fluid">
         <div class="cover column is-5">
-          <div class="album-cover"
-               :style="{ backgroundImage: 'url(' + album.cover + ')' }"/>
+          <img class="album-cover" :src="album.cover">
           <div class="player-row"
              :class="{ 'hidden': album.nowPlayingTrackTitle === null}">
           <div class="now-playing-title">
@@ -150,9 +149,12 @@ export default {
 
 .album {
   margin-bottom: 50px;
+
   .album-cover {
-    width: 350px;
-    height: 350px;
+    max-width: 500px;
+    width: 100%;
+    height: auto;
+    margin: auto;
     background-size: 100%;
   }
 
