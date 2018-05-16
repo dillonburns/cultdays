@@ -4,6 +4,7 @@
          :key="index"
          class="menu-item">
       <a v-if="link.externalURL"
+         target="_blank"
          :href="link.externalURL">
         <img v-if="link.image"
              :src="link.image"
