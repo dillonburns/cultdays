@@ -54,16 +54,16 @@ export default {
   line-height: 42px;
   text-align: left;
   position: relative;
-  padding: 5px 10px;
+  padding: 7.5px 15px;
   font-weight: bold;
   color: black;
   margin-bottom: 25px;
+  box-shadow: 5px 5px 0px 0px black;
 
   .site {
-    display: inline-block;
     font-size: 16px;
-    font-style: italic;
     line-height: 48px;
+    font-style: italic;
   }
 
   &:hover {
@@ -73,6 +73,7 @@ export default {
     color: transparent;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    box-shadow: 10px 10px 5px 0px black;
 
     &:after {
       content: '';

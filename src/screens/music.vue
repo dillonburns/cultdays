@@ -209,13 +209,13 @@ export default {
 
     &:hover {
       box-shadow: 10px 10px 5px 0px black;
-      transform: scale(1.1, 1.1);
     }
   }
 
   &:hover {
+    font-weight: bold;
+    transform: scale(1.05, 1.25);
     box-shadow: 7.5px 7.5px 2.5px 0px black;
-    transform: scale(1.05, 1.05);
   }
 
   .track-title {

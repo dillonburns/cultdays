@@ -1,6 +1,10 @@
 <template>
   <page-default>
-    <div class="about" v-html="text" />
+    <div class="columns is-centered is-fluid">
+      <div class="contact column is-three-quarters">
+          <div class="about" v-html="text" />
+      </div>
+    </div>
   </page-default>
 </template>
 
@@ -39,6 +43,7 @@ export default {
   margin-top: 10px;
   padding: 40px;
   color: black;
+  font-weight: bold;
   text-align: left;
   background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
   background-size: 600% 600%;

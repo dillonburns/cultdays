@@ -1,9 +1,11 @@
 <template>
-  <footer class="columns is-centered is-mobile is-fluid">
-    <navigation
-      class="column is-four-fifths"
-      horizontal/>
-  </footer>
+  <div class="container">
+    <footer class="columns is-centered is-mobile is-fluid">
+      <navigation
+        class="column is-four-fifths"
+        horizontal/>
+    </footer>
+  </div>
 </template>
 
 <script>
@@ -15,9 +17,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-footer {
-  margin-bottom: 20px;
-}
-</style>
