@@ -6,7 +6,6 @@
            class="album columns is-centered is-fluid">
         <div class="cover column is-one-third">
           <img :src="album.cover">
-          <a :href="album.download">download</a>
         </div>
         <div class="tracks column is-two-thirds">
           <div class="album-title">
