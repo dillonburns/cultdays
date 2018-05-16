@@ -2,9 +2,7 @@
   <div class="page">
     <page-header />
     <div class="content container">
-      <div class="columns is-centered is-mobile is-fluid">
-        <slot/>
-      </div>
+      <slot/>
     </div>
     <page-footer />
   </div>

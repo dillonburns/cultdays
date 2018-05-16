@@ -2,9 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Art from '@/screens/art'
 import Home from '@/screens/home'
-import Music from '@/screens/music'
 import Shop from '@/screens/shop'
 import About from '@/screens/about'
+import Music from '@/screens/music'
+import Press from '@/screens/press'
 import Contact from '@/screens/contact'
 
 Vue.use(Router)
@@ -30,6 +31,11 @@ export default new Router({
       path: '/shop',
       name: 'Shop',
       component: Shop
+    },
+    {
+      path: '/press',
+      name: 'Press',
+      component: Press
     },
     {
       path: '/about',

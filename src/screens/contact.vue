@@ -1,6 +1,8 @@
 <template>
   <page-default>
-    <div class="contact column is-three-quarters" v-html="text" />
+    <div class="columns is-centered is-fluid">
+      <div class="contact column is-three-quarters" v-html="text" />
+    </div>
   </page-default>
 </template>
 
@@ -33,5 +35,6 @@ export default {
 .contact {
   color: black;
   margin-top: 100px;
+  padding: 0 40px;
 }
 </style>

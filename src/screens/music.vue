@@ -16,7 +16,7 @@
           </div>
           <div class="player-row">
             <div class="now-playing-title">
-              {{ album.nowPlayingTrackTitle || 'click a song bitch' }}
+              {{ album.nowPlayingTrackTitle || '' }}
             </div>
             <plyr class="player"
                   ref="plyr"
@@ -170,17 +170,17 @@ export default {
     .album-title {
       font-size: 48px;
       font-weight: bold;
-      line-height: 35px;
+      line-height: 38px;
 
       a{
         border: 0;
         img {
           width: 24px;
           padding: 5px;
-          border: 1px solid black;
+          border: 2px solid black;
 
           &:hover {
-              border-bottom-width: 2px;
+              border-bottom-width: 5px;
               transform: translateY(-2px);
           }
         }
@@ -190,42 +190,59 @@ export default {
 }
 
 .track {
+  margin: 15px 0;
   display: flex;
+  cursor: pointer;
+  margin-left: 22px;
   position: relative;
-  margin-bottom: 15px;
   flex-direction: row;
+  transition: padding 50ms;
+  box-shadow: 5px 5px 0px 0px black;
 
   &.now-playing {
-    background: yellow;
     font-weight: bold;
+    box-shadow: 10px 10px 5px 0px black;
+    color: black;
+    background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+    background-size: 600% 600%;
+    animation: rainbow 6s ease infinite;
+
+    &:hover {
+      box-shadow: 10px 10px 5px 0px black;
+      transform: scale(1.1, 1.1);
+    }
   }
 
   &:hover {
-    .track-title {
-      color: white;
-      cursor: pointer;
-      background: black;
-      border-color: yellow;
-    }
-    .track-number {
-      color: black;
-    }
+    box-shadow: 7.5px 7.5px 2.5px 0px black;
+    transform: scale(1.05, 1.05);
   }
 
   .track-title {
     flex: 1 1 auto;
-    border-top: 5px solid black;
-    border-left: 50px solid black;
-    padding-left: 10px;
+    padding: 5px 10px;
   }
 
   .track-number {
-    position: absolute;
-    display: inline-block;
-    left: 22px;
-    color: white;
+    left: -25px;
+    color: black;
     z-index: 10;
     font-weight: bold;
+    position: absolute;
+    display: inline-block;
+  }
+}
+
+@keyframes rainbow {
+  0%,
+  100% {
+    background-position:0% 82%;
+  }
+  50% {
+    background-position:100% 19%;
+  }
+  100% {
+    background-position:0% 82%;
   }
 }
 </style>

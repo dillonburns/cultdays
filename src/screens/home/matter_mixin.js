@@ -111,7 +111,7 @@ export default {
           let posX = obj.getBoundingClientRect().left + width / 2
           let posY = obj.getBoundingClientRect().top + height / 2
 
-          var domBody = Bodies.rectangle(posX, posY, width * 1, height * 1, {
+          var domBody = Bodies.rectangle(posX, posY, width * 2, height * 1.25, {
             isStatic: true,
             render: {
               strokeStyle: 'transparent',

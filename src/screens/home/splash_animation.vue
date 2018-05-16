@@ -4,10 +4,8 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import MatterMixin from './matter_mixin'
-
 import Matter from 'matter-js'
+import MatterMixin from './matter_mixin'
 
 const World = Matter.World
 const Events = Matter.Events
@@ -15,7 +13,7 @@ const Common = Matter.Common
 const Bodies = Matter.Bodies
 const Composite = Matter.Composite
 
-const spriteScale = 0.6
+const spriteScale = 0.5
 
 export default {
 
@@ -35,9 +33,7 @@ export default {
     // Setup Scene
     this.initializeScene()
     this.addScreenBounds()
-    Vue.nextTick().then(() => {
-      this.addDomMatter(document.getElementsByClassName('dom-matter'))
-    })
+    this.addDomMatter(document.getElementsByClassName('dom-matter'))
 
     // Run
     this.runScene()

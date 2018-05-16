@@ -5,8 +5,12 @@
          class="menu-item">
       <a v-if="link.externalURL"
          :href="link.externalURL">
-        <img :src="link.image"
+        <img v-if="link.image"
+             :src="link.image"
              class="menu-image" />
+        <div v-else>
+          {{ link.label }}
+        </div>
       </a>
       <router-link v-else :to="link.path">
         <img :src="link.image"
@@ -62,6 +66,11 @@ export default {
               image: require('@/assets/images/instagram.png')
             }
           ]
+        },
+        {
+          label: 'Press',
+          path: '/press',
+          image: require('@/assets/images/contact.png')
         },
         {
           label: 'Contact',
