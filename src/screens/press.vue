@@ -57,7 +57,7 @@ export default {
   padding: 7.5px 15px;
   font-weight: bold;
   color: black;
-  margin-bottom: 25px;
+  margin-bottom: 50px;
   box-shadow: 5px 5px 0px 0px black;
 
   .site {

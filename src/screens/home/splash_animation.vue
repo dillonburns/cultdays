@@ -4,6 +4,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import Matter from 'matter-js'
 import MatterMixin from './matter_mixin'
 
@@ -33,7 +34,10 @@ export default {
     // Setup Scene
     this.initializeScene()
     this.addScreenBounds()
-    this.addDomMatter(document.getElementsByClassName('dom-matter'))
+    Vue.nextTick()
+      .then(() => {
+        this.addDomMatter(document.getElementsByClassName('dom-matter'))
+      })
 
     // Run
     this.runScene()
