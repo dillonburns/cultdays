@@ -16,6 +16,6 @@ export default {
 
 <style lang="scss" scoped>
 header {
-  margin: 30px 0 20px;
+  margin: 30px auto 20px;
 }
 </style>

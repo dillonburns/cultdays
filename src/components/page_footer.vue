@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
-    <footer class="columns is-centered is-mobile is-fluid">
+  <footer class="container">
+    <div class="columns is-centered is-mobile is-fluid">
       <navigation
         class="column is-four-fifths"
         horizontal/>
-    </footer>
-  </div>
+    </div>
+  </footer>
 </template>
 
 <script>

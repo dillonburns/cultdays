@@ -71,7 +71,7 @@ export default {
         {
           label: 'Press',
           path: '/press',
-          image: require('@/assets/images/contact.png')
+          image: require('@/assets/images/press.png')
         },
         {
           label: 'Contact',

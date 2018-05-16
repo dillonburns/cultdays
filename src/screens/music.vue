@@ -4,29 +4,31 @@
       <div v-for="(album, aindex) in music.albums"
            :key="aindex"
            class="album columns is-centered is-fluid">
-        <div class="cover column is-one-third">
-          <img :src="album.cover">
+        <div class="cover column is-5">
+          <div class="album-cover"
+               :style="{ backgroundImage: 'url(' + album.cover + ')' }"/>
+          <div class="player-row"
+             :class="{ 'hidden': album.nowPlayingTrackTitle === null}">
+          <div class="now-playing-title">
+            {{ album.nowPlayingTrackTitle || '' }}
+          </div>
+          <plyr class="player"
+                ref="plyr"
+                :options="plyrOptions">
+            <audio>
+              <source v-if="album.nowPlayingTrackTitle !== null"
+                      :src="null"
+                      type="audio/mp3" />
+            </audio>
+          </plyr>
         </div>
-        <div class="tracks column is-two-thirds">
+        </div>
+        <div class="tracks column is-7">
           <div class="album-title">
             {{ album.title }}
             <a :href="album.download">
               <img src="@/assets/images/download.png">
             </a>
-          </div>
-          <div class="player-row">
-            <div class="now-playing-title">
-              {{ album.nowPlayingTrackTitle || '' }}
-            </div>
-            <plyr class="player"
-                  ref="plyr"
-                  :options="plyrOptions">
-              <audio>
-                <source v-if="album.nowPlayingTrackTitle !== null"
-                        :src="null"
-                        type="audio/mp3" />
-              </audio>
-            </plyr>
           </div>
           <div v-for="(track, tindex) in album.tracks"
                :key="tindex"
@@ -76,14 +78,6 @@ export default {
   },
 
   methods: {
-    stopMusicOtherThan (aID) {
-      let plyrs = this.$refs.plyr
-      for (let player in plyrs) {
-        if (player !== aID) {
-          plyrs[player].player.pause()
-        }
-      }
-    },
     playTrack (aID, tID) {
       // identify what track is playing
       let plyr = this.$refs.plyr[aID].player
@@ -116,6 +110,14 @@ export default {
       }
       plyr.play()
     },
+    stopMusicOtherThan (aID) {
+      let plyrs = this.$refs.plyr
+      for (let player in plyrs) {
+        if (player !== aID) {
+          plyrs[player].player.pause()
+        }
+      }
+    },
     loadMusic () {
       console.log('Loading music directory..')
       for (let album in this.music.albums) {
@@ -133,6 +135,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~bulma/sass/utilities/_all.sass';
+@mixin rainbowBackground {
+  background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3) !important;
+  background-size: 600% 600% !important;
+  animation: rainbow 10s ease infinite !important;
+}
+
 .music {
   color: black;
   margin: 50px 0;
@@ -141,25 +150,30 @@ export default {
 
 .album {
   margin-bottom: 50px;
-  .cover {
-    img {
-      width: 350px;
-    }
+  .album-cover {
+    width: 350px;
+    height: 350px;
+    background-size: 100%;
   }
 
   .player-row {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     margin: 15px 0 10px;
+    opacity: 1;
+    transition: opacity 500ms;
+
+    &.hidden {
+      opacity: 0;
+    }
 
     .now-playing-title {
-      flex: 1 1 auto;
       font-weight: bold;
     }
 
     .player {
-      flex: 3 3 auto;
+      width: 100%;
     }
   }
 
@@ -171,6 +185,11 @@ export default {
       font-size: 48px;
       font-weight: bold;
       line-height: 38px;
+
+      @include mobile {
+        font-size: 32px;
+        line-height: 24px;
+      }
 
       a{
         border: 0;
@@ -203,9 +222,7 @@ export default {
     font-weight: bold;
     box-shadow: 10px 10px 5px 0px black;
     color: black;
-    background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
-    background-size: 600% 600%;
-    animation: rainbow 6s ease infinite;
+    @include rainbowBackground;
 
     &:hover {
       box-shadow: 10px 10px 5px 0px black;
@@ -214,7 +231,7 @@ export default {
 
   &:hover {
     font-weight: bold;
-    transform: scale(1.05, 1.25);
+    transform: scale(1.05, 1.05);
     box-shadow: 7.5px 7.5px 2.5px 0px black;
   }
 
@@ -243,6 +260,26 @@ export default {
   }
   100% {
     background-position:0% 82%;
+  }
+}
+
+/deep/ > .plyr--audio {
+  &.plyr--playing {
+    .plyr__control {
+      @include rainbowBackground;
+    }
+  }
+  .plyr__control {
+    color: black !important;
+    &:hover {
+      @include rainbowBackground;
+    }
+  }
+  .plyr__progress,
+  .plyr__volume {
+    input[type=range] {
+      color: black !important;
+    }
   }
 }
 </style>

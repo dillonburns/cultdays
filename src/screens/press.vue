@@ -1,15 +1,13 @@
 <template>
   <page-default>
-    <div class="columns is-centered is-fluid">
-      <div class="press column is-three-quarters is-half-widescreen">
+    <div class="columns is-centered is-mobile is-fluid">
+      <div class="press column is-9-mobile is-9-tablet is-9-desktop is-half-widescreen">
         <a v-for="(article, index) in press"
+           target="_blank"
            :key="index"
            :href="article.url">
           <div class="article">
-            {{ article.title }}
-            <span class="site">
-              - {{ article.site }}
-            </span>
+            <span class="site">{{ article.site }}: </span> {{ article.title }}
           </div>
         </a>
       </div>
@@ -45,8 +43,17 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~bulma/sass/utilities/_all.sass';
 .press {
-  margin-top: 50px;
+  margin: 50px 0;
+}
+
+@mixin animatedText () {
+  background-size: 1000% 1000%;
+  animation: rainbow 10s ease infinite;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .article {
@@ -60,20 +67,24 @@ export default {
   margin-bottom: 50px;
   box-shadow: 5px 5px 0px 0px black;
 
+  @include mobile {
+    font-size: 22px;
+    line-height: 28px;
+  }
+
   .site {
-    font-size: 16px;
-    line-height: 48px;
     font-style: italic;
   }
 
   &:hover {
     background: linear-gradient(124deg, #dd00f3, #2b1de8, #1ddde8, #1de840, #e81d1d, #ff2400);
-    background-size: 1000% 1000%;
-    animation: rainbow 12s ease infinite;
-    color: transparent;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    @include animatedText;
     box-shadow: 10px 10px 5px 0px black;
+
+    .site {
+      background: linear-gradient(124deg, #1de840, #e81d1d, #1ddde8, #ff2400, #dd00f3, #2b1de8);
+      @include animatedText;
+    }
 
     &:after {
       content: '';
