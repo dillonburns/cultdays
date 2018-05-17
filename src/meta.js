@@ -1,9 +1,37 @@
+const metaDescription = 'Cult Days is a musician, fashion and graphic designer from El Cerrito, CA, hailing from Iran and Turkey.'
+
 export default function metaInfo () {
   return {
     titleTemplate: titleTemplate,
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'description', content: metaDescription },
+
+      // OpenGraph data (Most widely used)
+      { property: 'og:title', content: titleTemplate() },
+      { property: 'og:site_name', content: 'Cult Days' },
+      // The list of types is available here: http://ogp.me/#types
+      { property: 'og:type', content: 'website' },
+      // Should the the same as your canonical link, see below.
+      { property: 'og:url', content: 'https://www.cultdays.com' },
+      { property: 'og:image', content: 'https://www.cultdays.com/static/meta-icon.png' },
+      // Often the same as your meta description, but not always.
+      { property: 'og:description', content: metaDescription },
+
+      // Twitter card
+      { name: 'twitter:card', content: 'summary' },
+      { name: 'twitter:site', content: 'https://www.cultdays.com' },
+      { name: 'twitter:title', content: titleTemplate() },
+      { name: 'twitter:description', content: metaDescription },
+      // Your twitter handle, if you have one.
+      { name: 'twitter:creator', content: '@Cultdays' },
+      { name: 'twitter:image:src', content: 'https://pbs.twimg.com/profile_images/972611671226171392/xqq_bj0q_400x400.jpg' },
+
+      // Google / Schema.org markup:
+      { itemprop: 'name', content: titleTemplate() },
+      { itemprop: 'description', content: metaDescription },
+      { itemprop: 'image', content: 'https://www.cultdays.com/static/meta-icon.png' }
     ],
     link: [
       {

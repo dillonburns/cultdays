@@ -10,6 +10,12 @@ import metaInfo from './meta.js'
 
 Vue.config.productionTip = false
 
+Vue.use(Meta)
+Vue.use(VueAnalytics, {
+  id: 'UA-68171172-1',
+  router
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -17,11 +23,4 @@ new Vue({
   components: { App },
   template: '<App/>',
   metaInfo
-})
-
-Vue.use(Meta)
-
-Vue.use(VueAnalytics, {
-  id: 'UA-68171172-1',
-  router
 })

@@ -77,10 +77,6 @@ export default {
     }
   },
 
-  mounted () {
-    // this.loadMusic()
-  },
-
   methods: {
     playTrack (aID, tID) {
       // identify what track is playing

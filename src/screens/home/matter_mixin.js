@@ -29,8 +29,6 @@ export default {
 
   methods: {
     initializeScene () {
-      console.log('inited scene')
-
       // create an engine
       this.engine = Engine.create({
         enableSleeping: true,

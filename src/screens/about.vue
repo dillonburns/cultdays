@@ -26,7 +26,7 @@ export default {
     return {
       text: `I'm Cult Days. I'm a musician, fashion and graphic designer from El Cerrito, CA but originally from Iran and Turkey.<br><br>
 
-          My goal is to build an "e-nation" of like-minded people. I wanna see world peace I don't think we are so far off. I'm a vegan, I meditate, do yoga, I like to party and get to know people. I love to collab and make friends. I want to gig everyday. Hit me up with your ideas or whatever.<br><br>
+        My goal is to build an "e-nation" of like-minded people. I wanna see world peace I don't think we are so far off. I'm a vegan, I meditate, do yoga, I like to party and get to know people. I love to collab and make friends. I want to gig everyday. Hit me up with your ideas or whatever.<br><br>
 
         site by <a target="_blank" href='${oobLink}'>outof.business</a>`
     }

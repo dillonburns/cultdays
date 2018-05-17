@@ -37,11 +37,13 @@ export default {
     Vue.nextTick()
       .then(() => {
         this.addDomMatter(document.getElementsByClassName('dom-matter'))
+        Vue.nextTick()
+          .then(() => {
+            // Run
+            this.runScene()
+            this.addSpriteImages()
+          })
       })
-
-    // Run
-    this.runScene()
-    this.addSpriteImages()
 
     // Setup Events
     Events.on(this.mouseConstraint, 'mousedown', (event) => {
