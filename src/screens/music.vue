@@ -25,7 +25,8 @@
         <div class="tracks column is-7">
           <div class="album-title">
             {{ album.title }}
-            <a :href="album.download">
+            <a v-if="album.download"
+               :href="album.download">
               <img src="@/assets/images/download.png">
             </a>
           </div>
@@ -54,6 +55,10 @@ export default {
   components: {
     Plyr,
     PageDefault
+  },
+
+  metaInfo: {
+    title: 'Music'
   },
 
   mixins: [ MusicData ],
@@ -135,58 +140,63 @@ export default {
 
 <style lang="scss" scoped>
 @import '~bulma/sass/utilities/_all.sass';
-@mixin rainbowBackground {
-  background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3) !important;
-  background-size: 600% 600% !important;
-  animation: rainbow 10s ease infinite !important;
-}
-
 .music {
   color: black;
-  margin: 50px 0;
-  padding: 0 7.5%;
+  margin: 75px 0;
+  padding: 0 5%;
+
+  @include mobile {
+    padding: 0 7.5%;
+  }
 }
 
 .album {
-  margin-bottom: 50px;
+  margin-bottom: 75px;
 
-  .album-cover {
-    max-width: 500px;
-    width: 100%;
-    height: auto;
-    margin: auto;
-    background-size: 100%;
-  }
-
-  .player-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 15px 0 10px;
-    opacity: 1;
-    transition: opacity 500ms;
-
-    &.hidden {
-      opacity: 0;
-    }
-
-    .now-playing-title {
-      font-weight: bold;
-    }
-
-    .player {
+  .cover {
+    .album-cover {
+      max-width: 500px;
       width: 100%;
+      height: auto;
+      margin: auto;
+      background-size: 100%;
+    }
+
+    .player-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 15px 0 10px;
+      opacity: 1;
+      transition: opacity 500ms;
+
+      &.hidden {
+        opacity: 0;
+      }
+
+      .now-playing-title {
+        font-weight: bold;
+      }
+
+      .player {
+        width: 100%;
+      }
     }
   }
 
   .tracks {
     text-align: left;
-    padding-left: 15px;
+    padding-left: 25px;
+
+    @include mobile {
+      padding: 0.75rem;
+    }
 
     .album-title {
       font-size: 48px;
       font-weight: bold;
       line-height: 38px;
+      margin-bottom: 35px;
 
       @include mobile {
         font-size: 32px;
@@ -198,11 +208,12 @@ export default {
         img {
           width: 24px;
           padding: 5px;
-          border: 2px solid black;
+          border: 1px solid black;
+          box-shadow: 2px 2px 0px 0px black;
 
           &:hover {
-              border-bottom-width: 5px;
-              transform: translateY(-2px);
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 5px 0px black;
           }
         }
       }
@@ -217,23 +228,29 @@ export default {
   margin-left: 22px;
   position: relative;
   flex-direction: row;
-  transition: padding 50ms;
+  transition: all 50ms;
   box-shadow: 5px 5px 0px 0px black;
+
+  @include mobile {
+    margin-left: 0;
+  }
 
   &.now-playing {
     font-weight: bold;
-    box-shadow: 10px 10px 5px 0px black;
+    box-shadow: 5px 5px 5px 0px black;
     color: black;
-    @include rainbowBackground;
+    background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+    background-size: 600% 600%;
+    animation: rainbow 10s ease infinite;
 
     &:hover {
-      box-shadow: 10px 10px 5px 0px black;
+      box-shadow: 7.5px 7.5px 5px 0px black;
     }
   }
 
   &:hover {
     font-weight: bold;
-    transform: scale(1.05, 1.05);
+    transform: translate(-2.5px, -2.5px);
     box-shadow: 7.5px 7.5px 2.5px 0px black;
   }
 
@@ -268,13 +285,28 @@ export default {
 /deep/ > .plyr--audio {
   &.plyr--playing {
     .plyr__control {
-      @include rainbowBackground;
+      background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+      background-size: 600% 600%;
+      animation: rainbow 10s ease infinite;
+      margin-right: 10px;
     }
   }
+  .plyr__controls {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   .plyr__control {
     color: black !important;
+    box-shadow: 5px 5px 0px 0px black;
+    border-radius: 0;
+
     &:hover {
-      @include rainbowBackground;
+      background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+      background-size: 600% 600%;
+      animation: rainbow 10s ease infinite;
+      box-shadow: 7.5px 7.5px 5px 0px black;
+      transform: translate(-2.5px, -2.5px);
     }
   }
   .plyr__progress,

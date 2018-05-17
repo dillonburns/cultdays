@@ -26,6 +26,10 @@ export default {
     PageDefault
   },
 
+  metaInfo: {
+    title: 'Art'
+  },
+
   data () {
     return {
       links: [

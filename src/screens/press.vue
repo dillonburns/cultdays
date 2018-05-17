@@ -23,6 +23,10 @@ export default {
     PageDefault
   },
 
+  metaInfo: {
+    title: 'Press'
+  },
+
   data () {
     return {
       press: [

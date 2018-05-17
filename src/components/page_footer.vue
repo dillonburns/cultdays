@@ -11,9 +11,16 @@
 <script>
 import Navigation from '@/components/navigation'
 export default {
-
   components: {
     Navigation
   }
 }
 </script>
+<style lang="scss" scoped>
+@import '~bulma/sass/utilities/_all.sass';
+footer {
+  @include mobile {
+    margin-bottom: 60px;
+  }
+}
+</style>

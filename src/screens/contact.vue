@@ -18,6 +18,10 @@ export default {
     PageDefault
   },
 
+  metaInfo: {
+    title: 'Contact'
+  },
+
   data () {
     return {
       text: `To book me for a musical performance email <a target="_blank" href="mailto:${sabaEmail}">${sabaEmail}</a><br><br><br>

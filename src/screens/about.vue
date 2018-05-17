@@ -18,6 +18,10 @@ export default {
     PageDefault
   },
 
+  metaInfo: {
+    title: 'About'
+  },
+
   data () {
     return {
       text: `I'm Cult Days. I'm a musician, fashion and graphic designer from El Cerrito, CA but originally from Iran and Turkey.<br><br>
