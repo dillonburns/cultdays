@@ -67,6 +67,7 @@ export default {
 }
 
 .link {
+  text-align: center;
   a {
     border: 0 !important;
   }
