@@ -14,7 +14,10 @@ Vue.use(Meta)
 
 Vue.use(VueAnalytics, {
   id: 'UA-103392564-1',
-  router
+  router,
+  debug: {
+    sendHitTask: process.env.NODE_ENV === 'production'
+  }
 })
 
 /* eslint-disable no-new */
