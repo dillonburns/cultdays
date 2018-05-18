@@ -97,7 +97,7 @@ nav {
   align-items: center;
 
   .menu-item {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
 
   &.horizontal {

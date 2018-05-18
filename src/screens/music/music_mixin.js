@@ -7,8 +7,6 @@ export default {
             title: 'FIRE FLAMES HARDBODY KARATE',
             cover: require('@/assets/music/FIRE_FLAMES/cover.jpg'),
             tracksContext: require.context('@/assets/music/FIRE_FLAMES/', true, /\.(mp3)$/),
-            nowPlayingTrackTitle: null,
-            nowPlayingTrackID: null,
             tracks: [
               {
                 title: 'SMOOTH OPERATOR',
@@ -72,7 +70,6 @@ export default {
             title: 'NEON ROSE',
             cover: require('@/assets/music/NEON_ROSE/cover.jpg'),
             tracksContext: require.context('@/assets/music/NEON_ROSE/', true, /\.(mp3)$/),
-            nowPlayingTrackTitle: null,
             tracks: [
               {
                 title: 'TIME AWAY',
@@ -132,7 +129,6 @@ export default {
             title: 'BOOM FOREVER',
             cover: require('@/assets/music/BOOM_FOREVER/cover.jpg'),
             tracksContext: require.context('@/assets/music/BOOM_FOREVER/', true, /\.(mp3)$/),
-            nowPlayingTrackTitle: null,
             tracks: [
               {
                 title: 'CULT DAYS',

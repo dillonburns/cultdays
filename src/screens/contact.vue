@@ -1,7 +1,9 @@
 <template>
   <page-default>
-    <div class="contact columns is-centered is-fluid">
-      <div class="column is-5 is-8-mobile" v-html="text" />
+    <div class="contact-me columns is-centered is-fluid">
+      <div class="column is-5 is-8-mobile">
+        <div class="contact" v-html="text" />
+      </div>
     </div>
   </page-default>
 </template>
@@ -34,25 +36,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.contact {
+.contact-me {
   height: 100%;
-  color: black;
   display: flex;
   align-items: center;
+}
+
+.contact {
   padding: 50px 0;
-  text-align: right;
   color: black;
   font-weight: bold;
+  text-align: right;
   background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
   background-size: 600% 600%;
   animation: rainbow 18s ease infinite;
   color: transparent;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.column {
-  padding: 50px 0;
 }
 
 @keyframes rainbow {

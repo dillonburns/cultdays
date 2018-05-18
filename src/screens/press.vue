@@ -80,7 +80,7 @@ export default {
   color: black;
   font-size: 32px;
   line-height: 42px;
-  text-align: right;
+  text-align: left;
   font-weight: bold;
   position: relative;
   padding: 7.5px 15px;

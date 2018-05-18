@@ -1,7 +1,11 @@
 <template>
   <div class="page">
-    <page-header class="header container"/>
-    <section class="content container">
+    <page-header class="header container"
+                 :fixed-header="fixedHeader">
+      <slot name="header-slot"></slot>
+    </page-header>
+    <section class="content container"
+             :class="{ 'sticky-header': fixedHeader }">
       <slot/>
     </section>
     <page-footer class="footer" />
@@ -16,6 +20,13 @@ export default {
   components: {
     PageHeader,
     PageFooter
+  },
+
+  props: {
+    fixedHeader: {
+      default: false,
+      type: Boolean
+    }
   }
 }
 </script>
@@ -24,6 +35,7 @@ export default {
 .page {
   height: 100%;
   display: flex;
+  position: relative;
   flex-direction: column;
 }
 
@@ -37,6 +49,11 @@ export default {
   z-index: 10;
   font-size: 16px;
   line-height: 24px;
+  transition: all 550ms;
+
+  &.sticky-header {
+    margin-top: 150px;
+  }
 }
 
 .footer {

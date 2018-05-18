@@ -1,28 +1,35 @@
 <template>
-  <page-default>
+  <page-default :fixed-header="trackPlaying">
+    <div slot="header-slot"
+         class="columns is-centered is-mobile">
+      <div class="player-row column is-12-mobile is-9-tablet is-6-desktop"
+           :class="{'hidden': !trackPlaying }">
+        <div class="now-playing-cover">
+          <img :src="nowPlaying.cover">
+        </div>
+        <div class="now-playing-track">
+          <div class="now-playing-title">
+            {{ nowPlaying.trackID + 1 }}. {{ nowPlaying.title }}
+          </div>
+          <plyr class="player"
+                ref="plyr"
+                :emit="['ended']"
+                @ended="nextTrack(nowPlaying.albumID, nowPlaying.trackID)"
+                :options="plyrOptions">
+            <audio>
+              <source :src="null"
+                      type="audio/mp3" />
+            </audio>
+          </plyr>
+        </div>
+      </div>
+    </div>
     <div class="music">
       <div v-for="(album, aindex) in music.albums"
            :key="aindex"
            class="album columns is-centered is-fluid">
         <div class="cover column is-5">
           <img class="album-cover" :src="album.cover">
-          <div class="player-row"
-             :class="{ 'hidden': album.nowPlayingTrackTitle === null}">
-          <div class="now-playing-title">
-            {{ album.nowPlayingTrackTitle || '' }}
-          </div>
-          <plyr class="player"
-                ref="plyr"
-                :emit="['ended']"
-                @ended="nextTrack(aindex, album.nowPlayingTrackID)"
-                :options="plyrOptions">
-            <audio>
-              <source v-if="album.nowPlayingTrackTitle !== null"
-                      :src="null"
-                      type="audio/mp3" />
-            </audio>
-          </plyr>
-        </div>
         </div>
         <div class="tracks column is-7">
           <div class="album-title">
@@ -35,10 +42,10 @@
           <div v-for="(track, tindex) in album.tracks"
                :key="tindex"
                class="track"
-               :class="{ 'now-playing': track.nowPlaying}">
+               :class="{ 'now-playing': isPlaying(aindex, tindex)}">
             <div class="track-title"
                  @click="playTrack(aindex, tindex)">
-              <span class="track-number">{{ tindex + 1 }}</span>{{ track.title }}
+              <span class="track-number">{{ tindex + 1 }}</span>{{ track.title }} {{ track.nowPlaying }}
             </div>
           </div>
         </div>
@@ -48,9 +55,9 @@
 </template>
 
 <script>
-import PageDefault from '@/components/page_default'
 import { Plyr } from 'vue-plyr'
 import 'vue-plyr/dist/vue-plyr.css'
+import PageDefault from '@/components/page_default'
 import MusicData from '@/screens/music/music_mixin.js'
 
 export default {
@@ -75,33 +82,50 @@ export default {
           'progress',
           'duration'
         ]
+      },
+      nowPlaying: {
+        albumID: null,
+        trackID: null,
+        title: null,
+        album: null,
+        cover: null
       }
+    }
+  },
+
+  computed: {
+    trackPlaying () {
+      return this.nowPlaying.title !== null
     }
   },
 
   methods: {
     playTrack (aID, tID) {
       // identify what track is playing
-      let plyr = this.$refs.plyr[aID].player
+      let plyr = this.$refs.plyr.player
       let album = this.music.albums[aID]
       let track = album.tracks[tID]
 
-      // unset all Now Playing data
-      this.music.albums.forEach((album) => {
-        album.nowPlayingTrackTitle = null
-        album.nowPlayingTrackID = null
-        album.tracks.forEach((track) => {
-          track.nowPlaying = false
-        })
+      // tell google analytics what album & song are playing
+      this.$ga.event({
+        eventCategory: 'Music',
+        eventAction: 'Play Album',
+        eventLabel: album.title
+      })
+      this.$ga.event({
+        eventCategory: 'Music',
+        eventAction: 'Play Song',
+        eventLabel: track.title
       })
 
-      // set correct Now Playing data
-      track.nowPlaying = true
-      album.nowPlayingTrackTitle = track.title
-      album.nowPlayingTrackID = tID
+      this.nowPlaying = {
+        albumID: aID,
+        trackID: tID,
+        title: track.title,
+        album: album.title,
+        cover: album.cover
+      }
 
-      // stop all other players and play the track
-      this.stopMusicOtherThan(aID)
       plyr.source = {
         type: 'audio',
         title: track.title,
@@ -112,25 +136,28 @@ export default {
           }
         ]
       }
+
       plyr.play()
     },
+
     nextTrack (aID, tID) {
+      this.$ga.event({
+        eventCategory: 'Music',
+        eventAction: 'Finished Song',
+        eventLabel: this.nowPlaying.title
+      })
+
       let nextTrackID = tID + 1
-      console.log('next track')
-      console.log(this.music.albums[aID].tracks[nextTrackID])
       if (this.music.albums[aID].tracks[nextTrackID] != null) {
         // Wait 600ms and go to next track
         setTimeout(() => this.playTrack(aID, nextTrackID), 600)
       }
     },
-    stopMusicOtherThan (aID) {
-      let plyrs = this.$refs.plyr
-      for (let player in plyrs) {
-        if (player !== aID) {
-          plyrs[player].player.pause()
-        }
-      }
+
+    isPlaying (aID, tID) {
+      return (aID === this.nowPlaying.albumID && tID === this.nowPlaying.trackID)
     },
+
     loadMusic () {
       // UNUSED. MAY LOAD SONGS VIA DIRECTORY IN THE FUTURE
       console.log('Loading music directory..')
@@ -160,6 +187,46 @@ export default {
   }
 }
 
+.player-row {
+  margin: 15px 0;
+  opacity: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: all 500ms;
+  justify-content: center;
+
+  @include mobile {
+    margin: 0 0 25px;
+  }
+
+  &.hidden {
+    opacity: 0;
+    height: 0;
+  }
+
+  .now-playing-title {
+    color: black;
+    text-align: left;
+    font-weight: bold;
+
+    @include mobile {
+      font-size: 14px;
+    }
+  }
+
+  .now-playing-track {
+    flex: 1 1 auto;
+  }
+
+  .now-playing-cover {
+    flex: 0 0 auto;
+    width: 100px;
+    height: auto;
+    margin-right: 15px;
+  }
+}
+
 .album {
   margin-bottom: 75px;
 
@@ -171,33 +238,12 @@ export default {
       margin: auto;
       background-size: 100%;
     }
-
-    .player-row {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 15px 0 10px;
-      opacity: 1;
-      transition: opacity 500ms;
-
-      &.hidden {
-        opacity: 0;
-      }
-
-      .now-playing-title {
-        font-weight: bold;
-      }
-
-      .player {
-        width: 100%;
-      }
-    }
   }
 
   .tracks {
     text-align: left;
     padding-left: 25px;
-    text-align: right;
+    text-align: left;
 
     @include mobile {
       padding: 0.75rem;
@@ -207,7 +253,7 @@ export default {
       font-size: 48px;
       font-weight: bold;
       line-height: 38px;
-      text-align: right;
+      text-align: left;
       margin-bottom: 35px;
 
       @include mobile {
@@ -236,6 +282,7 @@ export default {
 .track {
   margin: 15px 0;
   display: flex;
+  font-weight: bold;
   cursor: pointer;
   margin-left: 22px;
   position: relative;
@@ -248,7 +295,7 @@ export default {
   }
 
   &.now-playing {
-    font-weight: bold;
+    font-weight: 900;
     box-shadow: 5px 5px 5px 0px black;
     color: black;
     background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
@@ -261,7 +308,6 @@ export default {
   }
 
   &:hover {
-    font-weight: bold;
     transform: translate(-2.5px, -2.5px);
     box-shadow: 7.5px 7.5px 2.5px 0px black;
   }
@@ -272,7 +318,7 @@ export default {
   }
 
   .track-number {
-    left: -25px;
+    left: -15px;
     color: black;
     z-index: 10;
     font-weight: bold;
@@ -297,6 +343,7 @@ export default {
 /deep/ > .plyr--audio {
   * {
     border-radius: 0;
+    background: inherit;
   }
 
   &.plyr--playing {
@@ -304,7 +351,8 @@ export default {
       background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
       background-size: 600% 600%;
       animation: rainbow 10s ease infinite;
-      margin-right: 10px;
+      box-shadow: 7.5px 7.5px 5px 0px black;
+      transform: translate(-2.5px, -2.5px);
     }
   }
   .plyr__controls {
@@ -316,6 +364,7 @@ export default {
     color: black !important;
     box-shadow: 5px 5px 0px 0px black;
     border-radius: 0;
+    margin-right: 10px;
 
     &:hover {
       background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);

@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -62,21 +62,14 @@ table {
 
 html, body, #app {
   height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 </style>
