@@ -2,7 +2,7 @@
   <page-default :fixed-header="trackPlaying">
     <div slot="header-slot"
          class="columns is-centered is-mobile">
-      <div class="player-row column is-12-mobile is-9-tablet is-6-desktop"
+      <div class="player-row column is-11-mobile is-9-tablet is-6-desktop"
            :class="{'hidden': !trackPlaying }">
         <div class="now-playing-cover">
           <img :src="nowPlaying.cover">
@@ -287,15 +287,16 @@ export default {
   margin-left: 22px;
   position: relative;
   flex-direction: row;
-  transition: all 75ms;
+  transition: box-shadow 75ms;
   box-shadow: 5px 5px 0px 0px black;
 
   @include mobile {
     margin-left: 0;
+    margin-bottom: 20px;
+    padding: 5px 0;
   }
 
   &.now-playing {
-    font-weight: 900;
     box-shadow: 5px 5px 5px 0px black;
     color: black;
     background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
