@@ -11,8 +11,9 @@ import metaInfo from './meta.js'
 Vue.config.productionTip = false
 
 Vue.use(Meta)
+
 Vue.use(VueAnalytics, {
-  id: 'UA-68171172-1',
+  id: 'UA-103392564-1',
   router
 })
 
