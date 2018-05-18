@@ -1,13 +1,13 @@
 <template>
   <page-default>
     <div class="columns is-centered is-mobile is-fluid">
-      <div class="press column is-9-mobile is-9-tablet is-9-desktop is-half-widescreen">
+      <div class="press column is-10-mobile is-9-tablet is-9-desktop is-8-widescreen">
         <a v-for="(article, index) in press"
            target="_blank"
            :key="index"
            :href="article.url">
           <div class="article">
-            <span class="site">{{ article.site }}: </span> {{ article.title }}
+            <span class="site">{{ article.site }}: </span> <span class="article-title">{{ article.title }}</span>
           </div>
         </a>
       </div>
@@ -39,6 +39,21 @@ export default {
           title: 'Share A Moment With Cult Days In Intimate "Time Away" Video',
           site: 'The Fader',
           url: 'http://www.thefader.com/2016/01/28/cult-days-time-away-video'
+        },
+        {
+          title: 'CULT DAYS AKA SABA MOEEL IN NYT ARTICLE FOR HER MERCH SITE',
+          site: 'New York Times',
+          url: 'https://www.nytimes.com/2018/04/17/style/micromerch-niche-fandom.html'
+        },
+        {
+          title: 'INTERVIEW WITH CULT DAYS',
+          site: 'Abou Naddara',
+          url: 'http://abounaddara.net/interview/cult_days/'
+        },
+        {
+          title: 'CONSEQUENCE OF SOUND REPORT WITH CULT DAYS',
+          site: 'Consequence of Sound',
+          url: 'https://consequenceofsound.net/2018/02/zomby-busdriver-and-kool-a-d-accused-of-sexual-assault-report/'
         }
       ]
     }
@@ -48,6 +63,7 @@ export default {
 
 <style lang="scss">
 @import '~bulma/sass/utilities/_all.sass';
+
 .press {
   margin: 50px 0;
 }
@@ -61,23 +77,33 @@ export default {
 }
 
 .article {
+  color: black;
   font-size: 32px;
   line-height: 42px;
-  text-align: left;
+  text-align: right;
+  font-weight: bold;
   position: relative;
   padding: 7.5px 15px;
-  font-weight: bold;
-  color: black;
   margin-bottom: 50px;
+  transition: 100ms all;
   box-shadow: 5px 5px 0px 0px black;
 
   @include mobile {
-    font-size: 22px;
-    line-height: 28px;
+    padding: 5px;
+    font-size: 28px;
+
+    .site {
+      font-size: 32px;
+    }
   }
 
   .site {
     font-style: italic;
+  }
+
+  .article-title {
+    color: black;
+    text-transform: uppercase;
   }
 
   &:hover {

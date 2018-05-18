@@ -1,10 +1,10 @@
 <template>
   <div class="page">
-    <page-header class="container"/>
+    <page-header class="header container"/>
     <section class="content container">
       <slot/>
     </section>
-    <page-footer class="container" />
+    <page-footer class="footer" />
   </div>
 </template>
 
@@ -26,12 +26,22 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
+.header {
+  flex: 0 0 auto;
+}
+
 .content {
-  flex: 1;
+  flex: 1 1 auto;
   margin: auto;
   z-index: 10;
   font-size: 16px;
   line-height: 24px;
+}
+
+.footer {
+  flex: 0 0 auto;
+  padding: 10px 20px;
 }
 
 /deep/ > .content a {

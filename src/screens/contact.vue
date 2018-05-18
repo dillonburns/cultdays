@@ -40,6 +40,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 50px 0;
+  text-align: right;
   color: black;
   font-weight: bold;
   background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);

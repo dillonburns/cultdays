@@ -90,15 +90,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~bulma/sass/utilities/_all.sass';
 nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   .menu-item {
     margin-bottom: 10px;
   }
 
   &.horizontal {
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
     .menu-item {
       display: inline-block;
-      margin-right: 20px;
+      margin: 0 10px;
+
+      @include mobile {
+        margin-bottom: 20px;
+      }
     }
   }
 }

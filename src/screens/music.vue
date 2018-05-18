@@ -13,6 +13,8 @@
           </div>
           <plyr class="player"
                 ref="plyr"
+                :emit="['ended']"
+                @ended="nextTrack(aindex, album.nowPlayingTrackID)"
                 :options="plyrOptions">
             <audio>
               <source v-if="album.nowPlayingTrackTitle !== null"
@@ -87,6 +89,7 @@ export default {
       // unset all Now Playing data
       this.music.albums.forEach((album) => {
         album.nowPlayingTrackTitle = null
+        album.nowPlayingTrackID = null
         album.tracks.forEach((track) => {
           track.nowPlaying = false
         })
@@ -95,6 +98,7 @@ export default {
       // set correct Now Playing data
       track.nowPlaying = true
       album.nowPlayingTrackTitle = track.title
+      album.nowPlayingTrackID = tID
 
       // stop all other players and play the track
       this.stopMusicOtherThan(aID)
@@ -110,6 +114,15 @@ export default {
       }
       plyr.play()
     },
+    nextTrack (aID, tID) {
+      let nextTrackID = tID + 1
+      console.log('next track')
+      console.log(this.music.albums[aID].tracks[nextTrackID])
+      if (this.music.albums[aID].tracks[nextTrackID] != null) {
+        // Wait 600ms and go to next track
+        setTimeout(() => this.playTrack(aID, nextTrackID), 600)
+      }
+    },
     stopMusicOtherThan (aID) {
       let plyrs = this.$refs.plyr
       for (let player in plyrs) {
@@ -119,6 +132,7 @@ export default {
       }
     },
     loadMusic () {
+      // UNUSED. MAY LOAD SONGS VIA DIRECTORY IN THE FUTURE
       console.log('Loading music directory..')
       for (let album in this.music.albums) {
         let tracksContext = this.music.albums[album].tracksContext
@@ -183,6 +197,7 @@ export default {
   .tracks {
     text-align: left;
     padding-left: 25px;
+    text-align: right;
 
     @include mobile {
       padding: 0.75rem;
@@ -192,6 +207,7 @@ export default {
       font-size: 48px;
       font-weight: bold;
       line-height: 38px;
+      text-align: right;
       margin-bottom: 35px;
 
       @include mobile {
@@ -224,7 +240,7 @@ export default {
   margin-left: 22px;
   position: relative;
   flex-direction: row;
-  transition: all 50ms;
+  transition: all 75ms;
   box-shadow: 5px 5px 0px 0px black;
 
   @include mobile {
@@ -279,6 +295,10 @@ export default {
 }
 
 /deep/ > .plyr--audio {
+  * {
+    border-radius: 0;
+  }
+
   &.plyr--playing {
     .plyr__control {
       background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
@@ -309,7 +329,11 @@ export default {
   .plyr__volume {
     input[type=range] {
       color: black !important;
+      border-radius: 0px;
     }
+  }
+  .plyr__progress--buffer {
+    border-radius: 0;
   }
 }
 </style>

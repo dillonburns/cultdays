@@ -4,7 +4,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Matter from 'matter-js'
 import MatterMixin from './matter_mixin'
 
@@ -31,25 +30,27 @@ export default {
   },
 
   mounted () {
-    // Setup Scene
-    this.initializeScene()
-    this.addScreenBounds()
-    Vue.nextTick()
-      .then(() => {
-        this.addDomMatter(document.getElementsByClassName('dom-matter'))
-        Vue.nextTick()
-          .then(() => {
-            // Run
-            this.runScene()
-            this.addSpriteImages()
-          })
-      })
+    setTimeout(() => {
+      this.$nextTick()
+        .then(() => {
+          this.$nextTick()
+            .then(() => {
+              // Setup Scene
+              this.initializeScene()
+              this.addScreenBounds()
+              this.addDomMatter(document.getElementsByClassName('dom-matter'))
+              // Run
+              this.runScene()
+              this.addSpriteImages()
 
-    // Setup Events
-    Events.on(this.mouseConstraint, 'mousedown', (event) => {
-      this.mousePosition = event.mouse.position
-      this.addAnotherImage(2)
-    })
+              // Setup Events
+              Events.on(this.mouseConstraint, 'mousedown', (event) => {
+                this.mousePosition = event.mouse.position
+                this.addAnotherImage(2)
+              })
+            })
+        })
+    }, 1000)
   },
 
   methods: {
@@ -65,7 +66,7 @@ export default {
           let randY = Common.random(this.windowHeight / 8, this.windowHeight - (this.windowHeight / 8))
           let tempIcon = Bodies.rectangle(randX, randY, img.width * spriteScale, img.height * spriteScale, {
             id: Common.nextId(),
-            restitution: 0.05,
+            restitution: 0.1,
             render: {
               strokeStyle: '#f00',
               fillStyle: '#f00',

@@ -8,6 +8,7 @@ export default {
             cover: require('@/assets/music/FIRE_FLAMES/cover.jpg'),
             tracksContext: require.context('@/assets/music/FIRE_FLAMES/', true, /\.(mp3)$/),
             nowPlayingTrackTitle: null,
+            nowPlayingTrackID: null,
             tracks: [
               {
                 title: 'SMOOTH OPERATOR',
