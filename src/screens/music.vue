@@ -7,9 +7,10 @@
         <div class="now-playing-cover">
           <img :src="nowPlaying.album.cover">
         </div>
-        <div class="now-playing-track">
+        <div v-if="nowPlaying.album && nowPlaying.track"
+             class="now-playing-track">
           <div class="now-playing-title">
-            {{ nowPlaying.album.tracks.indexOf(nowPlaying.track) + 1 }}. {{ nowPlaying.track.title }}
+            {{ nowPlaying.track.title }}
           </div>
           <plyr class="player"
                 ref="plyr"
