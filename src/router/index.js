@@ -23,6 +23,11 @@ export default new Router({
       component: Music
     },
     {
+      path: '/music/:album/:track',
+      name: 'Track',
+      component: Music
+    },
+    {
       path: '/art',
       name: 'Art',
       component: Art

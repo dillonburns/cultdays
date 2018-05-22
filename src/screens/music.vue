@@ -5,16 +5,16 @@
       <div class="player-row column is-11-mobile is-9-tablet is-6-desktop"
            :class="{'hidden': !trackPlaying }">
         <div class="now-playing-cover">
-          <img :src="nowPlaying.cover">
+          <img :src="nowPlaying.album.cover">
         </div>
         <div class="now-playing-track">
           <div class="now-playing-title">
-            {{ nowPlaying.trackID + 1 }}. {{ nowPlaying.title }}
+            {{ nowPlaying.album.tracks.indexOf(nowPlaying.track) + 1 }}. {{ nowPlaying.track.title }}
           </div>
           <plyr class="player"
                 ref="plyr"
                 :emit="['ended']"
-                @ended="nextTrack(nowPlaying.albumID, nowPlaying.trackID)"
+                @ended="nextTrack(nowPlaying.album, nowPlaying.track)"
                 :options="plyrOptions">
             <audio>
               <source :src="null"
@@ -42,10 +42,10 @@
           <div v-for="(track, tindex) in album.tracks"
                :key="tindex"
                class="track"
-               :class="{ 'now-playing': isPlaying(aindex, tindex)}">
+               :class="{ 'now-playing': isPlaying(track)}">
             <div class="track-title"
-                 @click="playTrack(aindex, tindex)">
-              <span class="track-number">{{ tindex + 1 }}</span>{{ track.title }} {{ track.nowPlaying }}
+                 @click="playTrack(album, track)">
+              <span class="track-number">{{ tindex + 1 }}</span>{{ track.title }}
             </div>
           </div>
         </div>
@@ -84,47 +84,86 @@ export default {
         ]
       },
       nowPlaying: {
-        albumID: null,
-        trackID: null,
-        title: null,
-        album: null,
-        cover: null
+        track: {
+          title: null,
+          path: null
+        },
+        album: {
+          title: null,
+          cover: null
+        }
       }
     }
   },
 
   computed: {
     trackPlaying () {
-      return this.nowPlaying.title !== null
+      return this.nowPlaying.track.title !== null
+    }
+  },
+
+  mounted () {
+    if (this.$route.params.album && this.$route.params.track) {
+      this.playTrackFromRouterParams(this.$route.params.album, this.$route.params.track)
     }
   },
 
   methods: {
-    playTrack (aID, tID) {
-      // identify what track is playing
-      let plyr = this.$refs.plyr.player
-      let album = this.music.albums[aID]
-      let track = album.tracks[tID]
 
-      // tell google analytics what album & song are playing
+    playTrack (album, track) {
+      this.setNowPlaying(album, track)
+
+      this.trackGoogleAnalytics(this.nowPlaying)
+      this.setRouteParameters(this.nowPlaying)
+      setTimeout(() => this.loadTrack(this.nowPlaying), 600)
+    },
+
+    nextTrack (album, track) {
       this.$ga.event({
         eventCategory: 'Music',
-        eventAction: 'Play Album',
-        eventLabel: album.title
-      })
-      this.$ga.event({
-        eventCategory: 'Music',
-        eventAction: 'Play Song',
+        eventAction: 'Finished Song',
         eventLabel: track.title
       })
 
+      let nextTrack = album.tracks[album.tracks.indexOf(track) + 1]
+
+      if (nextTrack) {
+        this.playTrack(album, nextTrack)
+      }
+    },
+
+    playTrackFromRouterParams (aSlug, tSlug) {
+      let album = this.music.albums.filter(
+        album => slugify(album.title) === aSlug
+      )[0]
+
+      let track = album.tracks.filter(
+        track => slugify(track.title) === tSlug
+      )[0]
+
+      this.playTrack(album, track)
+    },
+
+    setNowPlaying (selectedAlbum, selectedTrack) {
+      let album = this.music.albums.filter(
+        album => album.title === selectedAlbum.title
+      )[0]
+
+      let track = album.tracks.filter(
+        track => track.title === selectedTrack.title
+      )[0]
+
       this.nowPlaying = {
-        albumID: aID,
-        trackID: tID,
-        title: track.title,
-        album: album.title,
+        track: track,
+        album: album,
         cover: album.cover
       }
+    },
+
+    loadTrack (nowPlaying) {
+      let track = nowPlaying.track
+
+      let plyr = this.$refs.plyr.player
 
       plyr.source = {
         type: 'audio',
@@ -138,24 +177,31 @@ export default {
       }
 
       plyr.play()
+
+      this.trackGoogleAnalytics(this.nowPlaying)
     },
 
-    nextTrack (aID, tID) {
+    setRouteParameters (nowPlaying) {
+      this.$router.push({
+        path: `/music/${slugify(nowPlaying.album.title)}/${slugify(nowPlaying.track.title)}`
+      })
+    },
+
+    trackGoogleAnalytics (nowPlaying) {
       this.$ga.event({
         eventCategory: 'Music',
-        eventAction: 'Finished Song',
-        eventLabel: this.nowPlaying.title
+        eventAction: 'Play Album',
+        eventLabel: nowPlaying.album.title
       })
-
-      let nextTrackID = tID + 1
-      if (this.music.albums[aID].tracks[nextTrackID] != null) {
-        // Wait 600ms and go to next track
-        setTimeout(() => this.playTrack(aID, nextTrackID), 600)
-      }
+      this.$ga.event({
+        eventCategory: 'Music',
+        eventAction: 'Play Song',
+        eventLabel: nowPlaying.track.title
+      })
     },
 
-    isPlaying (aID, tID) {
-      return (aID === this.nowPlaying.albumID && tID === this.nowPlaying.trackID)
+    isPlaying (track) {
+      return (track.title === this.nowPlaying.track.title)
     },
 
     loadMusic () {
@@ -173,6 +219,9 @@ export default {
     }
   }
 }
+
+const slugify = (name) => name.toLowerCase().replace(/\W/g, '')
+
 </script>
 
 <style lang="scss" scoped>
