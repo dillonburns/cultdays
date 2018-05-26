@@ -1,10 +1,11 @@
 <template>
-  <header>
+  <header :class="{ 'hidden' : trackPlaying}">
     <logo />
   </header>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Logo from '@/components/logo'
 
 export default {
@@ -18,6 +19,12 @@ export default {
       default: false,
       type: Boolean
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      trackPlaying: 'isTrackPlaying'
+    })
   }
 }
 </script>
@@ -26,6 +33,11 @@ export default {
 header {
   margin: 30px auto 20px;
   text-align: center;
+
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 .header {

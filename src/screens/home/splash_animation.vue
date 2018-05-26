@@ -50,7 +50,7 @@ export default {
               })
             })
         })
-    }, 1000)
+    }, 100)
   },
 
   methods: {

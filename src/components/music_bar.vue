@@ -1,6 +1,6 @@
 <template>
   <header :class="{ 'hidden' : !trackPlaying}">
-    <logo />
+    <logo v-if="!onHomePage"/>
     <div class="columns is-centered is-mobile">
       <div class="player-row column is-11-mobile is-9-tablet is-6-desktop"
            :class="{'hidden': !trackPlaying }">
@@ -44,7 +44,11 @@ export default {
     ...mapGetters({
       trackPlaying: 'isTrackPlaying',
       nowPlaying: 'getNowPlaying'
-    })
+    }),
+
+    onHomePage () {
+      return this.$route.name === 'Home'
+    }
   },
 
   data () {
