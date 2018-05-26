@@ -1,7 +1,6 @@
 <template>
-  <header :class="{ 'sticky': fixedHeader}">
+  <header>
     <logo />
-    <slot />
   </header>
 </template>
 
@@ -27,23 +26,6 @@ export default {
 header {
   margin: 30px auto 20px;
   text-align: center;
-
-  &.sticky {
-    position: fixed;
-    background: linear-gradient(to bottom, white 90%, transparent);
-    width: 100vw;
-    height: auto;
-    display: block;
-    z-index: 100;
-    margin: 0;
-    padding: 10px;
-    max-width: unset;
-
-    /deep/ .logo {
-      height: 50px;
-      transition: 150ms all;
-    }
-  }
 }
 
 .header {

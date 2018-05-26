@@ -5,8 +5,11 @@ import Meta from 'vue-meta'
 import VueAnalytics from 'vue-analytics'
 import App from './App'
 import router from './router'
+
 import 'bulma/css/bulma.css'
+import 'reset-css/reset.css'
 import metaInfo from './meta.js'
+import store from './store'
 
 Vue.config.productionTip = false
 
@@ -24,6 +27,7 @@ Vue.use(VueAnalytics, {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>',
   metaInfo

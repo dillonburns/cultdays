@@ -1,30 +1,5 @@
 <template>
-  <page-default :fixed-header="trackPlaying">
-    <div slot="header-slot"
-         class="columns is-centered is-mobile">
-      <div class="player-row column is-11-mobile is-9-tablet is-6-desktop"
-           :class="{'hidden': !trackPlaying }">
-        <div class="now-playing-cover">
-          <img :src="nowPlaying.album.cover">
-        </div>
-        <div v-if="nowPlaying.album && nowPlaying.track"
-             class="now-playing-track">
-          <div class="now-playing-title">
-            {{ nowPlaying.track.title }}
-          </div>
-          <plyr class="player"
-                ref="plyr"
-                :emit="['ended']"
-                @ended="nextTrack(nowPlaying.album, nowPlaying.track)"
-                :options="plyrOptions">
-            <audio>
-              <source :src="null"
-                      type="audio/mp3" />
-            </audio>
-          </plyr>
-        </div>
-      </div>
-    </div>
+  <page-default>
     <div class="music">
       <div v-for="(album, aindex) in music.albums"
            :key="aindex"
@@ -56,14 +31,14 @@
 </template>
 
 <script>
-import { Plyr } from 'vue-plyr'
-import 'vue-plyr/dist/vue-plyr.css'
+import { mapGetters } from 'vuex'
 import PageDefault from '@/components/page_default'
 import MusicData from '@/screens/music/music_mixin.js'
 
+// const FAKE_LOADING_TIME = 300
+
 export default {
   components: {
-    Plyr,
     PageDefault
   },
 
@@ -78,21 +53,11 @@ export default {
       plyrOptions: {
         autopause: false,
         controls: [
-          'play',
+          'play-large',
           'volume',
           'progress',
           'duration'
         ]
-      },
-      nowPlaying: {
-        track: {
-          title: null,
-          path: null
-        },
-        album: {
-          title: null,
-          cover: null
-        }
       }
     }
   },
@@ -100,12 +65,18 @@ export default {
   computed: {
     trackPlaying () {
       return this.nowPlaying.track.title !== null
-    }
+    },
+    ...mapGetters({
+      trackPlaying: 'isTrackPlaying',
+      nowPlaying: 'getNowPlaying'
+    })
   },
 
   mounted () {
     if (this.$route.params.album && this.$route.params.track) {
       this.playTrackFromRouterParams(this.$route.params.album, this.$route.params.track)
+    } else if (this.trackPlaying) {
+      this.setRouteParameters(this.nowPlaying)
     }
   },
 
@@ -113,10 +84,8 @@ export default {
 
     playTrack (album, track) {
       this.setNowPlaying(album, track)
-
       this.trackGoogleAnalytics(this.nowPlaying)
       this.setRouteParameters(this.nowPlaying)
-      setTimeout(() => this.loadTrack(this.nowPlaying), 600)
     },
 
     nextTrack (album, track) {
@@ -154,32 +123,13 @@ export default {
         track => track.title === selectedTrack.title
       )[0]
 
-      this.nowPlaying = {
+      let nowPlaying = {
         track: track,
         album: album,
         cover: album.cover
       }
-    },
 
-    loadTrack (nowPlaying) {
-      let track = nowPlaying.track
-
-      let plyr = this.$refs.plyr.player
-
-      plyr.source = {
-        type: 'audio',
-        title: track.title,
-        sources: [
-          {
-            src: track.path,
-            type: 'audio/mp3'
-          }
-        ]
-      }
-
-      plyr.play()
-
-      this.trackGoogleAnalytics(this.nowPlaying)
+      this.$store.commit('setNowPlaying', nowPlaying)
     },
 
     setRouteParameters (nowPlaying) {
@@ -234,46 +184,6 @@ const slugify = (name) => name.toLowerCase().replace(/\W/g, '')
 
   @include mobile {
     padding: 0 7.5%;
-  }
-}
-
-.player-row {
-  margin: 15px 0;
-  opacity: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  transition: all 500ms;
-  justify-content: center;
-
-  @include mobile {
-    margin: 0 0 25px;
-  }
-
-  &.hidden {
-    opacity: 0;
-    height: 0;
-  }
-
-  .now-playing-title {
-    color: black;
-    text-align: left;
-    font-weight: bold;
-
-    @include mobile {
-      font-size: 14px;
-    }
-  }
-
-  .now-playing-track {
-    flex: 1 1 auto;
-  }
-
-  .now-playing-cover {
-    flex: 0 0 auto;
-    width: 100px;
-    height: auto;
-    margin-right: 15px;
   }
 }
 
@@ -388,52 +298,6 @@ const slugify = (name) => name.toLowerCase().replace(/\W/g, '')
   }
   100% {
     background-position:0% 82%;
-  }
-}
-
-/deep/ > .plyr--audio {
-  * {
-    border-radius: 0;
-    background: inherit;
-  }
-
-  &.plyr--playing {
-    .plyr__control {
-      background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
-      background-size: 600% 600%;
-      animation: rainbow 10s ease infinite;
-      box-shadow: 7.5px 7.5px 5px 0px black;
-      transform: translate(-2.5px, -2.5px);
-    }
-  }
-  .plyr__controls {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .plyr__control {
-    color: black !important;
-    box-shadow: 5px 5px 0px 0px black;
-    border-radius: 0;
-    margin-right: 10px;
-
-    &:hover {
-      background: linear-gradient(124deg, #ff2400, #e81d1d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
-      background-size: 600% 600%;
-      animation: rainbow 10s ease infinite;
-      box-shadow: 7.5px 7.5px 5px 0px black;
-      transform: translate(-2.5px, -2.5px);
-    }
-  }
-  .plyr__progress,
-  .plyr__volume {
-    input[type=range] {
-      color: black !important;
-      border-radius: 0px;
-    }
-  }
-  .plyr__progress--buffer {
-    border-radius: 0;
   }
 }
 </style>
