@@ -29,6 +29,17 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    Composite.allBodies(this.splashComposite).forEach((body) => {
+      Composite.remove(this.splashComposite, body, true)
+    })
+    Composite.remove(this.world, this.splashComposite)
+    delete this.splashComposite
+    delete this.spriteData
+    this.stopScene()
+    this.deleteEverything()
+  },
+
   mounted () {
     setTimeout(() => {
       this.$nextTick()
@@ -41,6 +52,7 @@ export default {
               this.addDomMatter(document.getElementsByClassName('dom-matter'))
               // Run
               this.runScene()
+              World.addComposite(this.world, this.splashComposite)
               this.addSpriteImages()
 
               // Setup Events
@@ -84,8 +96,8 @@ export default {
             height: img.height
           })
 
-          // Composite.add(this.splashComposite, tempIcon)
-          World.addBody(this.world, tempIcon)
+          Composite.add(this.splashComposite, tempIcon)
+          // World.addBody(this.world, tempIcon)
         }
         img.src = url
       })
@@ -108,8 +120,11 @@ export default {
             }
           }
         })
-        // Composite.add(this.splashComposite, newIcon)
-        World.addBody(this.world, newIcon)
+        Composite.add(this.splashComposite, newIcon)
+        const bodies = Composite.allBodies(this.splashComposite)
+        if (bodies.length > this.spriteData.length * 2) {
+          Composite.remove(this.splashComposite, bodies[0], true)
+        }
       }
     }
   }

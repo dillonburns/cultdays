@@ -5,6 +5,8 @@ const World = Matter.World
 const Bodies = Matter.Bodies
 const Engine = Matter.Engine
 const Render = Matter.Render
+const Runner = Matter.Runner
+console.log(Runner)
 const MouseConstraint = Matter.MouseConstraint
 
 // const Body = Matter.Body
@@ -36,6 +38,7 @@ export default {
         velocityIterations: 1,
         constraintIterations: 1
       })
+      Engine.clear(this.engine)
       this.world = this.engine.world
 
       // create a renderer
@@ -73,10 +76,23 @@ export default {
       this.world.gravity.y = 0.75
 
       // run the engine
-      Engine.run(this.engine)
+      Runner.start(this.engine)
 
       // run the renderer
       Render.run(this.render)
+    },
+
+    stopScene () {
+      Runner.stop(this.engine)
+      Render.stop(this.render)
+    },
+
+    deleteEverything () {
+      delete this.engine
+      delete this.world
+      delete this.canvas
+      delete this.render
+      delete this.mouse
     },
 
     addScreenBounds () {
