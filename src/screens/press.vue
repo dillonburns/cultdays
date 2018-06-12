@@ -31,6 +31,11 @@ export default {
     return {
       press: [
         {
+          title: 'Saba Moeel of Cult Days can’t be boxed in',
+          site: 'The Fader',
+          url: 'http://www.thefader.com/2018/06/04/cult-days-saba-mooel-interview'
+        },
+        {
           title: 'Cult Days Is Having 8 Types Of Fun On Fire Flames Hardbody Karate',
           site: 'The Fader',
           url: 'http://www.thefader.com/2017/07/27/cult-days-is-having-8-types-of-fun-on-ifire-flames-hardbody-karatei'
